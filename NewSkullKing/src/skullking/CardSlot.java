@@ -9,8 +9,8 @@ import java.awt.event.*;
 
 public class CardSlot extends JButton {
 	int slotIndex;			// index of cardslot (0~9)
-	int cardIndex;			// present card number
-	int cardNum;			// important when normal card appeared
+	int cardIndex;			// present card number (0~65)
+	int cardNum;			// important when normal card appeared (1~13)
 	boolean canPick;		// can pick card?
 	ImageIcon canPickImg;	// image for pickable card
 	ImageIcon dontPickImg;	// image for non-pickable card
@@ -34,46 +34,55 @@ public class CardSlot extends JButton {
 				"scarymarry", "skullking"
 			};
 	
+	public CardSlot() { //for comparator. not need to change variables.
+		slotIndex=-1;
+		cardIndex=-1;
+		canPick=false;
+		this.setSize(100,150); //card size
+		this.setLocation(500,300); //location
+	}
+	
 	
 	public CardSlot(int idx, int round, int cardidx) {
 		slotIndex=idx;
 		cardIndex=cardidx;
+		//setRolloverIcon(new ImageIcon("13.jpg")); //마우스 갖다댔을때 when rollover mouse
 		if(cardIndex>=GOLD && cardIndex<=BLACK)
-			cardNum=(cardidx-5)%13;
+			cardNum=(cardidx-5)%13;	//set card number when normal card
 		else
 			cardNum=-1;
-		this.setSize(100,150);
-		this.setLocation(600+80*idx,600); //need to check
-		if(idx<round) {
+		this.setSize(100,150);		//card size
+		this.setLocation(600+80*idx,500); //need to check
+		if(idx<round) { // if it is available to pick in this round (round5 : only can pick card[0]~card[4])
 			//can pick
 			canPick=true;
-			this.setIconImage(canPick);
+			this.setIconImage(canPick); //set icon for card picture
 			this.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					System.out.println("card number " + cardIndex 
-							+ " in slotIndex "+ slotIndex +"picked..");
+							+ " in slotIndex "+ slotIndex +" picked.."); //when clicked, print result
 				}
 			});
 		}else {
 			canPick=false;
-			this.setIconImage(canPick);
+			this.setIconImage(canPick); //set icon for XXXXX
 			this.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					System.out.println("do not touch card "+slotIndex);
+					System.out.println("do not touch card "+slotIndex); //when clicked print result
 				}
 			});
 		}
 	}
 
-	public void setIconImage(boolean canPick) {
+	public void setIconImage(boolean canPick) {	//set icon
 		if(canPick) {
 			String str=cardLevelString[getLevel()]+".jpg";
 			canPickImg=new ImageIcon(str);
 			System.out.println(str);
-			setIcon(canPickImg);
+			setIcon(canPickImg);	//proper icon
 		}
 		else {
-			dontPickImg=new ImageIcon("dontPick.jpg");
+			dontPickImg=new ImageIcon("dontPick.jpg");	//XXXX
 			setIcon(dontPickImg);
 		}
 	}
@@ -106,7 +115,16 @@ public class CardSlot extends JButton {
 			return 0;
 	}
 	
-	public boolean getCanPick() {
+	public boolean getCanPick() {	// return whether this cardslot can be picked
 		return canPick;
+	}
+	
+	public ImageIcon getCanPickImg() {	//return canPickImg, which is card image
+		return canPickImg;
+	}
+	
+	public void updateCard(CardSlot cslot) {	//update card image (used in comparator ; need to move?)
+		ImageIcon icon=cslot.getCanPickImg();
+		setIcon(icon);
 	}
 }
