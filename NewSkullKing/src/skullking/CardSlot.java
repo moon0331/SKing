@@ -47,7 +47,8 @@ public class CardSlot extends JButton {
 		slotIndex=idx;
 		cardIndex=cardidx;
 		//setRolloverIcon(new ImageIcon("13.jpg")); //마우스 갖다댔을때 when rollover mouse
-		if(cardIndex>=GOLD && cardIndex<=BLACK)
+		System.out.println(cardidx+"picked");
+		if(cardidx>=5 && cardidx<=56)
 			cardNum=(cardidx-5)%13;	//set card number when normal card
 		else
 			cardNum=-1;
@@ -72,6 +73,10 @@ public class CardSlot extends JButton {
 				}
 			});
 		}
+	}
+	
+	public String getCardInfo() {
+		return CardSlot.cardLevelString[getLevel()]+cardNum;
 	}
 
 	public void setIconImage(boolean canPick) {	//set icon
