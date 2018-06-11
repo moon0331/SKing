@@ -11,6 +11,17 @@ class Game{
 
 public class Main extends JFrame{
 	static JFrame gameScreen;			//main screen where game played.
+	Player[] p;
+	
+	public void gameRound(int round) {
+		for(int i=0; i<round;i++) {
+			
+		}
+	}
+	
+	public static void calResult() {
+		System.out.println("END the game");
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -26,6 +37,11 @@ public class Main extends JFrame{
 		roundNumber.setLocation(700,100);//location
 		gameScreen.add(roundNumber);//look frame
 		
+		JLabel statusLabel=new JLabel("SKULLKING");
+		statusLabel.setFont(statusLabel.getFont().deriveFont(25.0f));
+		statusLabel.setSize(300,300);
+		statusLabel.setLocation(100,500);
+		gameScreen.add(statusLabel);
 		
 		CardSlot[] cslot=new CardSlot[10]; //ten cards
 		Comparator comparator_card=new Comparator(); //slot for most strong card. //make comparator = inheritance of cardslot?
@@ -40,14 +56,26 @@ public class Main extends JFrame{
 		JTextField jt=new JTextField(10);	//text field to write int
 		jt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	//if string entered
+				//이 클래스 안에 넣기
 				try {
 					int val=Integer.parseInt(jt.getText());	//change into int
 					System.out.println(val);
 					if(cslot[val].getCanPick(comparator_card)) {			//if the card is pickable
 						comparator_card.updateCard(cslot[val]); //need to update comparator when more powerful card occurs.(resolve it!)
+						statusLabel.setText(cslot[val].getCardInfo()+" picked"); //change text
 						cslot[val].setVisible(false); //disable to pick slot's card
+						//calculate result and end turn.
+						//round++;
+						//if(round==11) calResult();
+						for(int i=0;i<10;i++) {
+							cslot[i].setVisible(false);
+							cslot[i].setCardSlot(i, 6, r.nextInt(CardSlot.NUM_OF_CARDS));
+							cslot[i].setVisible(true);
+						}
 					}
-				} catch(Exception ex){}
+				} catch(Exception ex){
+					//승수예측처리
+				}
 			}
 		});
 		jt.setSize(300,40); //textfield size
