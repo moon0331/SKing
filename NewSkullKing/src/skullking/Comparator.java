@@ -16,3 +16,4 @@ public class Comparator extends CardSlot {
 		return winner;
 	}
 }
+//compare //?
