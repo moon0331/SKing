@@ -10,7 +10,7 @@ class Game{
 }
 
 public class Main extends JFrame{
-	static JFrame gameScreen;			//main screen where game played.
+	JFrame gameScreen;			//main screen where game played.
 	Player[] p;
 	
 	public void gameRound(int round) {
@@ -19,13 +19,13 @@ public class Main extends JFrame{
 		}
 	}
 	
-	public static void calResult() {
+	public void calResult() {
 		System.out.println("END the game");
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		gameScreen=new JFrame(); //my frame
+		JFrame gameScreen=new JFrame(); //my frame
 		gameScreen.setLayout(null); //not use layout manager
 		gameScreen.setSize(800, 800); //frame size
 		gameScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //close option
@@ -44,7 +44,9 @@ public class Main extends JFrame{
 		gameScreen.add(statusLabel);
 		
 		CardSlot[] cslot=new CardSlot[10]; //ten cards
+		
 		Comparator comparator_card=new Comparator(); //slot for most strong card. //make comparator = inheritance of cardslot?
+		
 		//comparator_card.setLocation(500,200);
 		gameScreen.add(comparator_card);	//now you can see comparator_card in screen
 		Random r=new Random();
@@ -61,17 +63,20 @@ public class Main extends JFrame{
 					int val=Integer.parseInt(jt.getText());	//change into int
 					System.out.println(val);
 					if(cslot[val].getCanPick(comparator_card)) {			//if the card is pickable
+						//check level
 						comparator_card.updateCard(cslot[val]); //need to update comparator when more powerful card occurs.(resolve it!)
 						statusLabel.setText(cslot[val].getCardInfo()+" picked"); //change text
 						cslot[val].setVisible(false); //disable to pick slot's card
 						//calculate result and end turn.
 						//round++;
 						//if(round==11) calResult();
-						for(int i=0;i<10;i++) {
-							cslot[i].setVisible(false);
-							cslot[i].setCardSlot(i, 6, r.nextInt(CardSlot.NUM_OF_CARDS));
-							cslot[i].setVisible(true);
-						}
+						/*if(remainCard==0) {
+							for(int i=0;i<10;i++) {
+								cslot[i].setVisible(false);
+								cslot[i].setCardSlot(i, 6, r.nextInt(CardSlot.NUM_OF_CARDS));
+								cslot[i].setVisible(true);
+							}
+						}*/ //카드 재배치
 					}
 				} catch(Exception ex){
 					//승수예측처리

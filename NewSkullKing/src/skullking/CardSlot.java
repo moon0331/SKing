@@ -50,6 +50,8 @@ public class CardSlot extends JButton {
 		System.out.println(cardidx+"picked");
 		if(cardidx>=5 && cardidx<=56)
 			cardNum=(cardidx-5)%13+1;	//set card number when normal card
+		if(cardidx>=GOLD && cardidx<=BLACK)
+			cardNum=(cardidx-5)%13;	//set card number when normal card
 		else
 			cardNum=0;
 		this.setSize(100,150);		//card size
