@@ -156,19 +156,14 @@ public class CardSlot extends JButton {
 	}
 	
 	public boolean checkValidity(Comparator C) {
-		//compCard에 따라 낼수 있는지 확인
-		return true;
 		
-		
-		
-		/*int level=C.getLevel();
-		if(level>=CardSlot.GOLD && level<=CardSlot.BLACK) {
+		int level=C.getLevel();
+		if(level>=CardSlot.GOLD && level<=CardSlot.BLACK) {//if first filed num card color is same as mine, it can be played
 			if(level==this.getLevel()) return true;
 			else return false;
 		}
-		else {
-			return false; //???
-		}*/
+		else//if first filed is not num card, u can play anyone.
+			return true;
 	}
 	
 	public boolean getCanPick(Comparator compCardNum) {	// return whether this cardslot can be picked

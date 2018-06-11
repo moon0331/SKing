@@ -44,7 +44,6 @@ public class Comparator extends CardSlot {
 						setData(present_card,player_num);
 					}
 				}
-				
 			}
 			else if(level==CardSlot.BLACK) {
 				if(present_card.getLevel()>level || present_card.getcardIndex()>strongest_card.getcardIndex()) {
