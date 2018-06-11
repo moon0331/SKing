@@ -8,131 +8,58 @@ public class Comparator extends CardSlot {
 		super();  
 	}
 	
+	public void setData(CardSlot present_card, int player_num) {
+		strongest_card=present_card;
+		winner=player_num;
+		//updateCard(present_card);
+	}
+	
 	public void updateCard(CardSlot present_card, int player_num) { //update card picture, but alert strongest card and its owner
-		if(strongest_card==null)
-		{
+		/*
+		 * 	static final int ESCAPE=1; 		//index 0~4 (5)
+			static final int GOLD=2;		//index 5~17 (13)
+			static final int RED=3;			//index 18~30 (13)
+			static final int BLUE=4;		//index 31~43 (13)
+			static final int BLACK=5;		//index 44~56 (13)
+			static final int MERMAID=6;		//index 57~58 (2)
+			static final int PIRATE=7;		//index 59~63 (5)
+			static final int SCARY_MARRY=8;	//index 64
+			static final int SKULL_KING=9;	//index 65
+		 * */
+		
+		if(strongest_card==null){
 			strongest_card=present_card; 
 			winner=player_num;
-		} 
-		else {
-			
-			if(strongest_card.getLevel()==1) {
-				strongest_card=present_card; 
-				winner=player_num;
+		} else {
+			int level=strongest_card.getLevel();
+			if(level==CardSlot.ESCAPE) {
+				setData(present_card,player_num);
 			}
-			
-			else if(strongest_card.getLevel()==2) {
-				
-				if(present_card.getLevel()==2) {
-					if(present_card.getcardIndex()>strongest_card.getcardIndex()) {
-						strongest_card=present_card; 
-						winner=player_num;
-					}
-								
+			else if(level>=CardSlot.GOLD && level<CardSlot.BLACK){
+				if(present_card.getLevel()>CardSlot.BLACK || present_card.getcardIndex()>strongest_card.getcardIndex()) {
+					setData(present_card,player_num);
 				}
-				
-				else {
-					if(present_card.getLevel()>4) {
-						strongest_card=present_card; 
-						winner=player_num;
-					}
-						
-				}
-						
-			} 
-			
-			else if (strongest_card.getLevel() == 3) {
-
-				if (present_card.getLevel() == 3) {
-					if (present_card.getcardIndex() > strongest_card.getcardIndex()) {
-						strongest_card=present_card; 
-						winner=player_num;
-					}
-						
-				}
-
-				else {
-					if (present_card.getLevel() > 4) {
-						strongest_card=present_card; 
-						winner=player_num;
-					}
-						
-				}
-
 			}
-
-			else if (strongest_card.getLevel() == 4) {
-
-				if (present_card.getLevel() == 4) {
-					if (present_card.getcardIndex() > strongest_card.getcardIndex()) {
-						strongest_card=present_card; 
-						winner=player_num;
-					}
-						
+			else if(level==CardSlot.BLACK) {
+				if(present_card.getLevel()>level || present_card.getcardIndex()>strongest_card.getcardIndex()) {
+					setData(present_card,player_num);
 				}
-
-				else {
-					if (present_card.getLevel() > 4) {
-						strongest_card=present_card; 
-						winner=player_num;
-					}
-						
+			}
+			else if(level==CardSlot.MERMAID) {
+				if(present_card.getLevel()>level) {
+					setData(present_card,player_num);
 				}
-
-			}	
-			
-			else if (strongest_card.getLevel() == 5) {
-
-				if (present_card.getLevel() == 5) {
-					if (present_card.getcardIndex() > strongest_card.getcardIndex()) {
-						strongest_card=present_card; 
-						winner=player_num;
-					}
-					
+			}
+			else if(level==CardSlot.PIRATE || level==CardSlot.SCARY_MARRY) {
+				if(present_card.getLevel()==SKULL_KING) {
+					setData(present_card,player_num);
 				}
-
-				else {
-					if (present_card.getLevel() > 5) {
-						strongest_card=present_card; 
-						winner=player_num;
-					}
-						
+			}
+			else {
+				if(present_card.getLevel()==CardSlot.MERMAID) { //MERMAID==6
+					setData(present_card,player_num);
 				}
-
-			} 
-			//
-			
-			else if (strongest_card.getLevel() == 6) { 
-				if(present_card.getLevel()>6) {
-					strongest_card=present_card; 
-					winner=player_num;
-				}
-					 
-			} 
-			
-			else if (strongest_card.getLevel() == 7) { 
-				if(present_card.getLevel()==9) {
-					strongest_card=present_card; 
-					winner=player_num;
-				}
-					
-			} 
-			
-			else if (strongest_card.getLevel() == 8) { 
-				if(present_card.getLevel()==9) {
-					strongest_card=present_card; 
-					winner=player_num;
-				}
-					
-			} 
-			
-			else if (strongest_card.getLevel() == 9) { 
-				if(present_card.getLevel()==6) {
-					strongest_card=present_card; 
-					winner=player_num;
-				}
-					
-			}	
+			}
 		}
 	}
 
