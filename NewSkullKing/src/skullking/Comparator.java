@@ -36,9 +36,15 @@ public class Comparator extends CardSlot {
 				setData(present_card,player_num);
 			}
 			else if(level>=CardSlot.GOLD && level<CardSlot.BLACK){
-				if(present_card.getLevel()>CardSlot.BLACK || present_card.getcardIndex()>strongest_card.getcardIndex()) {
+				if(present_card.getLevel()>=CardSlot.BLACK) {//if the strong card is normal number card, the strong card will be changed when the input is over black_card(includes black card)
 					setData(present_card,player_num);
 				}
+				else if(level==present_card.getLevel()) {//else, if strong card color is same as present_card color, compare the index of cards and set.
+					if(present_card.getcardIndex()>strongest_card.getcardIndex()) {
+						setData(present_card,player_num);
+					}
+				}
+				
 			}
 			else if(level==CardSlot.BLACK) {
 				if(present_card.getLevel()>level || present_card.getcardIndex()>strongest_card.getcardIndex()) {
