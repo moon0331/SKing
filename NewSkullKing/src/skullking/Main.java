@@ -43,7 +43,7 @@ public class Main extends JFrame{
 				try {
 					int val=Integer.parseInt(jt.getText());	//change into int
 					System.out.println(val);
-					if(cslot[val].getCanPick()) {			//if the card is pickable
+					if(cslot[val].getCanPick(comparator_card)) {			//if the card is pickable
 						comparator_card.updateCard(cslot[val]); //need to update comparator when more powerful card occurs.(resolve it!)
 						cslot[val].setVisible(false); //disable to pick slot's card
 					}

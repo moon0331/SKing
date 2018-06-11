@@ -115,8 +115,24 @@ public class CardSlot extends JButton {
 			return 0;
 	}
 	
-	public boolean getCanPick() {	// return whether this cardslot can be picked
-		return canPick;
+	public boolean checkValidity(Comparator C) {
+		//compCard에 따라 낼수 있는지 확인
+		return true;
+		
+		
+		
+		/*int level=C.getLevel();
+		if(level>=CardSlot.GOLD && level<=CardSlot.BLACK) {
+			if(level==this.getLevel()) return true;
+			else return false;
+		}
+		else {
+			return false; //???
+		}*/
+	}
+	
+	public boolean getCanPick(Comparator compCardNum) {	// return whether this cardslot can be picked
+		return canPick && checkValidity(compCardNum);
 	}
 	
 	public ImageIcon getCanPickImg() {	//return canPickImg, which is card image

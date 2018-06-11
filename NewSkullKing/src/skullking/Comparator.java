@@ -5,4 +5,14 @@ public class Comparator extends CardSlot {
 	public Comparator() {
 		super();
 	}
+	
+	public void updateCard() {
+		
+	}
+	public void updateWinner() { //winner update
+		
+	}
+	public int getWinner() {
+		return winner;
+	}
 }
