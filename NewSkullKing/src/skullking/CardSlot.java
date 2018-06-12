@@ -35,11 +35,12 @@ public class CardSlot extends JButton {
 			};
 	
 	public CardSlot() { //for comparator. not need to change variables.
+		System.out.println("생성자 for comparator");
 		slotIndex=-1;
 		cardIndex=-1;
 		canPick=false;
 		this.setSize(100,150); //card size
-		this.setLocation(500,300); //location
+		this.setLocation(Main.CENTER,150); //location
 	}
 	
 	
@@ -50,12 +51,10 @@ public class CardSlot extends JButton {
 		System.out.println(cardidx+"picked");
 		if(cardidx>=5 && cardidx<=56)
 			cardNum=(cardidx-5)%13+1;	//set card number when normal card
-		if(cardidx>=GOLD && cardidx<=BLACK)
-			cardNum=(cardidx-5)%13;	//set card number when normal card
 		else
 			cardNum=0;
 		this.setSize(100,150);		//card size
-		this.setLocation(600+80*idx,500); //need to check
+		this.setLocation(400+80*idx,400); //need to check
 		if(idx<round) { // if it is available to pick in this round (round5 : only can pick card[0]~card[4])
 			//can pick
 			canPick=true;
@@ -128,7 +127,7 @@ public class CardSlot extends JButton {
 	}
 	
 	public int getLevel() {
-		if(cardIndex>=0 && cardIndex<=4)
+		if(cardIndex>=-1 && cardIndex<=4) //-1 for comparator
 			return ESCAPE;
 		else if(cardIndex<=17)
 			return GOLD;
@@ -156,19 +155,16 @@ public class CardSlot extends JButton {
 	}
 	
 	public boolean checkValidity(Comparator C) {
-		//compCard에 따라 낼수 있는지 확인
-		return true;
+		System.out.println("check validity");
+		System.out.println("comparator level : "+C.getLevel()+CardSlot.cardLevelString[C.getLevel()]);
 		
-		
-		
-		/*int level=C.getLevel();
-		if(level>=CardSlot.GOLD && level<=CardSlot.BLACK) {
+		int level=C.getLevel();
+		if(level>=CardSlot.GOLD && level<=CardSlot.BLACK) {//if first filed num card color is same as mine, it can be played
 			if(level==this.getLevel()) return true;
 			else return false;
 		}
-		else {
-			return false; //???
-		}*/
+		else//if first filed is not num card, u can play anyone.
+			return true;
 	}
 	
 	public boolean getCanPick(Comparator compCardNum) {	// return whether this cardslot can be picked
@@ -180,6 +176,7 @@ public class CardSlot extends JButton {
 	}
 	
 	public void updateCard(CardSlot cslot) {	//update card image (used in comparator ; need to move?)
+		System.out.println("update card!");
 		ImageIcon icon=cslot.getCanPickImg();
 		setIcon(icon);
 	}

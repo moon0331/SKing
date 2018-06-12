@@ -5,17 +5,23 @@ import javax.swing.JPanel;
 public class Player extends JPanel{
 	static String[] nameString= {"AAA","BBB","CCC","DDD","FFF"};
 	String name;
+	boolean isComputer;
 	int predictWin;
 	int numOfWin;
 	int idx;
 	int score;
-	public Player(int i) {
+	public Player(int i, boolean isComputer) {
 		idx=i;
 		name=nameString[i]; //exception
+		this.isComputer=isComputer;
 	}
 	
 	public void setPredictWin(int win) {
 		predictWin=win;
+	}
+	
+	public int getPredictWin() {
+		return predictWin;
 	}
 	
 	public int setWin() {

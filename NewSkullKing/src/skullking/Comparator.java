@@ -16,6 +16,12 @@ public class Comparator extends CardSlot {
 		super.updateCard(present_card);
 	}
 	
+	public String getWinOrLose(int playerNum) {
+		if(winner==playerNum) return "True";
+		else return "False";
+		
+	}
+	
 	public void updateCard(CardSlot present_card, int player_num) { //update card picture, but alert strongest card and its owner
 		/*
 		 * 	static final int ESCAPE=1; 		//index 0~4 (5)
