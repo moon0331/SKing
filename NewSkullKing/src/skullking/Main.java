@@ -9,6 +9,31 @@ import java.util.Scanner;
 // 컴퓨터 플레이어가 어떻게 카드를 내는가
 // 점수 계산 및 종료(종료 언제 하는지 확인)
 
+class CardDeck{
+	boolean[] isAlreadyPicked;
+	Random r=new Random();
+	public CardDeck(){
+		isAlreadyPicked=new boolean[CardSlot.NUM_OF_CARDS];
+		for(int i=0;i<CardSlot.NUM_OF_CARDS; i++) {
+			isAlreadyPicked[i]=false;
+		}
+	}
+	public int getCard() {
+		while(true) {
+			int val=r.nextInt(CardSlot.NUM_OF_CARDS);
+			if(isAlreadyPicked[val]==false) {
+				isAlreadyPicked[val]=true;
+				return val;
+			}
+		}
+	}
+	public void resetCardDeck() {
+		for(int i=0;i<CardSlot.NUM_OF_CARDS; i++) {
+			isAlreadyPicked[i]=false;
+		}
+	}
+}
+
 class GameRound{
 	int round;
 	int remained;
@@ -64,14 +89,26 @@ public class Main extends JFrame{
 		JLabel roundNumber=new JLabel("1round");		//label to represent round number
 		roundNumber.setFont(roundNumber.getFont().deriveFont(20.0f)); //font size 20
 		roundNumber.setSize(300,300); 	//label size
-		roundNumber.setLocation(Main.CENTER+150, 50);//location
+		roundNumber.setLocation(Main.CENTER, -100);//location
 		gameScreen.add(roundNumber);//look frame
 		
-		JLabel statusLabel=new JLabel("SKULLKING");
+		JLabel statusLabel=new JLabel("Your Turn : ");
 		statusLabel.setFont(statusLabel.getFont().deriveFont(25.0f));
 		statusLabel.setSize(600,300);
 		statusLabel.setLocation(Main.CENTER-200,200);
 		gameScreen.add(statusLabel);
+		
+		JLabel strongest_card_here=new JLabel("Strongest Card");
+		strongest_card_here.setFont(strongest_card_here.getFont().deriveFont(15.0f));
+		strongest_card_here.setSize(300,300);
+		strongest_card_here.setLocation(Main.CENTER-75,-20);
+		gameScreen.add(strongest_card_here);
+		
+		JLabel your_card_here=new JLabel("Your Card");
+		your_card_here.setFont(your_card_here.getFont().deriveFont(15.0f));
+		your_card_here.setSize(300,300);
+		your_card_here.setLocation(Main.CENTER+90,-20);
+		gameScreen.add(your_card_here);
 		
 		CardSlot[] cslot=new CardSlot[10]; //ten cards
 		
@@ -94,8 +131,10 @@ public class Main extends JFrame{
 		gameScreen.add(my_play_card);
 		
 		Random r=new Random();
+		CardDeck deck=new CardDeck();
+		
 		for(int i=0;i<10;i++) {
-			cslot[i]=new CardSlot(i,round.getRound(), r.nextInt(CardSlot.NUM_OF_CARDS));	//make random card in cardslot
+			cslot[i]=new CardSlot(i,round.getRound(), deck.getCard());	//make random card in cardslot
 			gameScreen.add(cslot[i]);	//you can see that slot
 		}
 		
@@ -110,7 +149,7 @@ public class Main extends JFrame{
 					System.out.println(val+"선택함"); 
 					
 					/*for(int computer=1; computer<lastGameWinner; computer++) { //나 다음 컴퓨터가 카드 냄
-						comparator_card.updateCard(new CardSlot(0,0,r.nextInt(CardSlot.NUM_OF_CARDS)),computer); 
+						comparator_card.updateCard(new CardSlot(0,0,deck.getCard()),computer); 
 					}*/
 					int rnd=round.getRound();
 					
@@ -151,7 +190,7 @@ public class Main extends JFrame{
 						for(int computer=1; computer<4;/*computer%NUM_OF_PLAYER<lastGameWinner;*/ computer++) {
 							System.out.println("컴퓨터 "+computer+"의 차례");
 							while(true) {
-								CardSlot c=new CardSlot(0,0,r.nextInt(CardSlot.NUM_OF_CARDS));
+								CardSlot c=new CardSlot(0,0,deck.getCard());
 								System.out.println(c.getCardInfo()+"새로운 카드의 정보");
 								if(c.checkValidity(comparator_card)) {
 									comparator_card.updateCard(c,computer);
@@ -159,8 +198,9 @@ public class Main extends JFrame{
 								}
 							}
 						}
-						statusLabel.setText(cslot[val].getCardInfo()+" picked. "
-						+"you win this game? : "+comparator_card.getWinOrLose(0)); //change text
+						statusLabel.setText("You picked "+cslot[val].getCardInfo()+
+						". Won"
+						+ " the Game? : "+comparator_card.getWinOrLose(0)); //change text
 						cslot[val].setCanPlay(false);
 						cslot[val].setVisible(false); //disable to pick slot's card
 						round.endTurn();
@@ -180,10 +220,11 @@ public class Main extends JFrame{
 								// 화면에 띄워주기
 							}
 							System.out.println(rnd+"라운드 새로 시작");
+							deck.resetCardDeck();
 							for(int i=0;i<10;i++) {	//카드세팅
 								cslot[i].setVisible(false);
 								//System.out.println("============================================================");
-								cslot[i].setCardSlot(i, rnd+1, r.nextInt(CardSlot.NUM_OF_CARDS)); //새 라운드에서 카드 받음
+								cslot[i].setCardSlot(i, rnd+1, deck.getCard()); //새 라운드에서 카드 받음
 								cslot[i].setVisible(true);
 								//System.out.println("카드세팅완료!");
 							}
@@ -198,7 +239,7 @@ public class Main extends JFrame{
 							
 							for(int computer=lastGameWinner; computer<NUM_OF_PLAYER; computer++) {
 								//여기는 카드 내는것. 사람이 내고나서 다른 컴퓨터들도 카드를 내야 함.
-								comparator_card.updateCard(new CardSlot(0,0,r.nextInt(CardSlot.NUM_OF_CARDS)),computer); 
+								comparator_card.updateCard(new CardSlot(0,0,deck.getCard()),computer); 
 							}
 							round.setRound(rnd+1);
 							roundNumber.setText((1+rnd)+"round");
