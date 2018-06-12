@@ -1,9 +1,9 @@
 해야 할것
 
-메인함수의 저것들을 반복문으로 때려야
-
-comparator에서 우위에 있을때만 바꾸는것
 comparator에서 우승자 결정하는 것
+
+// firstNumber 설정  - 게임마다 - 처음 숫자 나왔을때 제한시키는 comparator_card.setFirstNumberCard() 사용해야함.
+// 컴퓨터 플레이어가 어떻게 카드를 내는가
 
 점수계산
 

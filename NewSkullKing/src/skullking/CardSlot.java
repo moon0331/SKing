@@ -12,6 +12,7 @@ public class CardSlot extends JButton {
 	int cardIndex;			// present card number (0~65)
 	int cardNum;			// important when normal card appeared (1~13)
 	boolean canPick;		// can pick card?
+	boolean canPlay;		// can play card?
 	ImageIcon canPickImg;	// image for pickable card
 	ImageIcon dontPickImg;	// image for non-pickable card
 	
@@ -97,6 +98,7 @@ public class CardSlot extends JButton {
 			});
 		}else {
 			canPick=false;
+			System.out.println("this card is not allowed : "+idx+"th card");
 			this.setIconImage(canPick); //set icon for XXXXX
 			this.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -157,14 +159,25 @@ public class CardSlot extends JButton {
 	public boolean checkValidity(Comparator C) {
 		System.out.println("check validity");
 		System.out.println("comparator level : "+C.getLevel()+CardSlot.cardLevelString[C.getLevel()]);
-		
-		int level=C.getLevel();
-		if(level>=CardSlot.GOLD && level<=CardSlot.BLACK) {//if first filed num card color is same as mine, it can be played
-			if(level==this.getLevel()) return true;
-			else return false;
+		System.out.println(C.getFirstNumberCard());
+		int level=1;
+		if(C.getFirstNumberCard()!=null) {
+			level=C.getFirstNumberCard().getLevel();
 		}
-		else//if first filed is not num card, u can play anyone.
-			return true;
+		System.out.println(level+"현재 지배하는 레벨");
+		if(level>=CardSlot.GOLD && level<=CardSlot.BLACK) {//if first filed num card color is same as mine, it can be played
+			if(level==this.getLevel()) {
+				canPlay=true;
+			}
+			else {
+				canPlay=false;
+			}
+		}
+		else{ //if first filed is not num card, u can play anyone.
+			canPlay=true;
+		}
+		//System.out.println("낼수 있나? : "+canPlay);
+		return canPlay;
 	}
 	
 	public boolean getCanPick(Comparator compCardNum) {	// return whether this cardslot can be picked
@@ -173,6 +186,10 @@ public class CardSlot extends JButton {
 	
 	public ImageIcon getCanPickImg() {	//return canPickImg, which is card image
 		return canPickImg;
+	}
+	
+	public void setCanPlay(boolean tf) {
+		canPlay=tf;
 	}
 	
 	public void updateCard(CardSlot cslot) {	//update card image (used in comparator ; need to move?)

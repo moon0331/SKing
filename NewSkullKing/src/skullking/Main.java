@@ -90,6 +90,7 @@ public class Main extends JFrame{
 					
 					boolean tfval=false;
 					for(int k=0;k<10;k++) {
+						System.out.println(k+"번째 카드체크"+cslot[k].checkValidity(comparator_card));
 						if(cslot[k].checkValidity(comparator_card)) {
 							tfval=true;
 							break;
@@ -97,6 +98,7 @@ public class Main extends JFrame{
 					}
 					if(!tfval) {
 						cslot[val].setCanPlay(true);
+						System.out.println("모든 카드 가능");
 					}
 					
 					if(cslot[val].getCanPick(comparator_card)) {			//if the card is pickable

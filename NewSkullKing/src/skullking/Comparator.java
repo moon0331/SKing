@@ -3,11 +3,21 @@ package skullking;
 public class Comparator extends CardSlot {
 	private int winner; 
 	private CardSlot strongest_card;
+	private CardSlot firstNumber;
 
 	public Comparator() {
 		super();  
 		strongest_card=null;
+		firstNumber=null;
 		System.out.println(this.getLevel()+"레벨");
+	}
+	
+	public CardSlot getFirstNumberCard() {
+		return firstNumber;
+	}
+	
+	public void setFirstNumberCard(CardSlot c) {
+		firstNumber=c;
 	}
 	
 	public void setData(CardSlot present_card, int player_num) {
