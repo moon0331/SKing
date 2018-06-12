@@ -201,4 +201,7 @@ public class CardSlot extends JButton {
 		ImageIcon icon=cslot.getCanPickImg();
 		setIcon(icon);
 	}
+	public int getCardIndex() {
+		return cardIndex;
+	}
 }

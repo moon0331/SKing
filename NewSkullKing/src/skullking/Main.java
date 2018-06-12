@@ -32,6 +32,9 @@ class CardDeck{
 			isAlreadyPicked[i]=false;
 		}
 	}
+	public void setFree(int idx) {
+		isAlreadyPicked[idx]=false;
+	}
 }
 
 class GameRound{
@@ -110,6 +113,12 @@ public class Main extends JFrame{
 		your_card_here.setLocation(Main.CENTER+90,-20);
 		gameScreen.add(your_card_here);
 		
+		JLabel last_game_winner=new JLabel("Last Game Winner");
+		last_game_winner.setFont(last_game_winner.getFont().deriveFont(15.0f));
+		last_game_winner.setSize(300,300);
+		last_game_winner.setLocation(Main.CENTER+200,-20);
+		gameScreen.add(last_game_winner);
+		
 		CardSlot[] cslot=new CardSlot[10]; //ten cards
 		
 		Comparator comparator_card=new Comparator(-75); //slot for most strong card. //make comparator = inheritance of cardslot?
@@ -153,7 +162,10 @@ public class Main extends JFrame{
 					}*/
 					int rnd=round.getRound();
 					
-					if(val>=rnd) return;
+					if(val>=rnd) { 
+						System.out.println("not a valid card : round="+rnd+", cardnum="+val);
+						return;
+					}
 					
 					boolean tfval=false;
 					for(int k=0;k<10;k++) {
@@ -165,7 +177,7 @@ public class Main extends JFrame{
 						}
 					}
 					if(!tfval) {
-						if(!cslot[val].isVisible())
+						if(cslot[val].isVisible())
 							cslot[val].setCanPlay(true);
 						System.out.println("모든 카드 가능");
 					}
@@ -178,7 +190,7 @@ public class Main extends JFrame{
 						//comparator_card.updateCard(cslot[val]); //need to update comparator when more powerful card occurs.(resolve it!)
 
 						for(int i=0;i<10;i++) {
-							System.out.println("i번째는..........."+cslot[i].isVisible());
+							System.out.println(i+"번째는..........."+cslot[i].isVisible());
 						}
 						
 						System.out.println("컴퓨터 카드 냄");
@@ -186,7 +198,6 @@ public class Main extends JFrame{
 						my_play_card.updateCard(cslot[val]);
 						System.out.println("현재 comparator에 놓인 카드는 "+comparator_card.getCardInfo());
 						
-						//for문 현재 안돌아감
 						for(int computer=1; computer<4;/*computer%NUM_OF_PLAYER<lastGameWinner;*/ computer++) {
 							System.out.println("컴퓨터 "+computer+"의 차례");
 							while(true) {
@@ -195,12 +206,14 @@ public class Main extends JFrame{
 								if(c.checkValidity(comparator_card)) {
 									comparator_card.updateCard(c,computer);
 									break;
+								} else {
+									deck.setFree(c.getCardIndex());
 								}
 							}
 						}
 						statusLabel.setText("You picked "+cslot[val].getCardInfo()+
 						". Won"
-						+ " the Game? : "+comparator_card.getWinOrLose(0)); //change text
+						+ " this Game? : "+comparator_card.getWinOrLose(0)); //change text
 						cslot[val].setCanPlay(false);
 						cslot[val].setVisible(false); //disable to pick slot's card
 						round.endTurn();
@@ -243,8 +256,18 @@ public class Main extends JFrame{
 							
 							for(int computer=lastGameWinner; computer<NUM_OF_PLAYER; computer++) {
 								//여기는 카드 내는것. 사람이 내고나서 다른 컴퓨터들도 카드를 내야 함.
-								comparator_card.updateCard(new CardSlot(0,0,deck.getCard()),computer); 
+								while(true) {
+									CardSlot newCard=new CardSlot(0,0,deck.getCard());
+									if(newCard.checkValidity(comparator_card)) {
+										comparator_card.updateCard(new CardSlot(0,0,deck.getCard()),computer);
+										break;
+									} else {
+										deck.setFree(newCard.getCardIndex());
+									}
+								}
+								System.out.println("computer picked!");
 							}
+							last_game_winner.setText("Last Game Winner : "+lastGameWinner);
 							round.setRound(rnd+1);
 							roundNumber.setText((1+rnd)+"round");
 						}
