@@ -11,9 +11,14 @@ public class Player extends JPanel{
 	int idx;
 	int score;
 	public Player(int i, boolean isComputer) {
+		name=nameString[i];
 		idx=i;
 		name=nameString[i]; //exception
 		this.isComputer=isComputer;
+	}
+	
+	public String getPlayerName() {
+		return name;
 	}
 	
 	public void setPredictWin(int win) {
@@ -43,5 +48,9 @@ public class Player extends JPanel{
 		int s=calScore(round);
 		System.out.println(name+" score +"+s);
 		score+=s;
+	}
+	
+	public int getScore() {
+		return score;
 	}
 }

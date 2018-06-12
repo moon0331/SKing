@@ -119,11 +119,12 @@ public class CardSlot extends JButton {
 		if(canPick) {
 			String str=cardLevelString[getLevel()]+".jpg";
 			canPickImg=new ImageIcon(str);
-			System.out.println(str);
+			System.out.println(str+" "+this.getcardIndex()+"번 뽑음");
 			setIcon(canPickImg);	//proper icon
 		}
 		else {
 			dontPickImg=new ImageIcon("dontPick.jpg");	//XXXX
+			System.out.println("\tbut not allowed");
 			setIcon(dontPickImg);
 		}
 	}

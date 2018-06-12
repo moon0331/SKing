@@ -7,6 +7,7 @@ public class Comparator extends CardSlot {
 
 	public Comparator() {
 		super();  
+		winner=0;
 		strongest_card=null;
 		firstNumber=null;
 		System.out.println(this.getLevel()+"레벨");
@@ -45,13 +46,14 @@ public class Comparator extends CardSlot {
 			static final int SKULL_KING=9;	//index 65
 		 * */
 
-		System.out.println(strongest_card+"ㅁㄴㄹㅇ");
+		//여기서 오류남 (getCardInfo())
 		if(strongest_card==null){
-			System.out.println("strong card is none");
+			System.out.println("strong card is none, 따라서 이긴다!");
 			strongest_card=present_card; 
 			winner=player_num;
 			setData(present_card,player_num);
 		} else {
+			System.out.println(strongest_card.getCardInfo()+"를 "+player_num+"이 냈다! 과연...."); //카드정보 뽑는 메서드?
 			int level=strongest_card.getLevel();
 			if(level==CardSlot.ESCAPE) {
 				setData(present_card,player_num);
@@ -87,7 +89,7 @@ public class Comparator extends CardSlot {
 				}
 			}
 		}
-		System.out.println(strongest_card.getCardInfo()+winner+"wins");
+		System.out.println(strongest_card.getCardInfo()+"\n"+winner+" wins");
 	}
 
 	public int getWinner() {
