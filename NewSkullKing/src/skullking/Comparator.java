@@ -6,12 +6,14 @@ public class Comparator extends CardSlot {
 
 	public Comparator() {
 		super();  
+		strongest_card=null;
+		System.out.println(this.getLevel()+"레벨");
 	}
 	
 	public void setData(CardSlot present_card, int player_num) {
 		strongest_card=present_card;
 		winner=player_num;
-		//updateCard(present_card);
+		super.updateCard(present_card);
 	}
 	
 	public void updateCard(CardSlot present_card, int player_num) { //update card picture, but alert strongest card and its owner
@@ -26,18 +28,26 @@ public class Comparator extends CardSlot {
 			static final int SCARY_MARRY=8;	//index 64
 			static final int SKULL_KING=9;	//index 65
 		 * */
-		
+
+		System.out.println(strongest_card+"ㅁㄴㄹㅇ");
 		if(strongest_card==null){
+			System.out.println("strong card is none");
 			strongest_card=present_card; 
 			winner=player_num;
+			setData(present_card,player_num);
 		} else {
 			int level=strongest_card.getLevel();
 			if(level==CardSlot.ESCAPE) {
 				setData(present_card,player_num);
 			}
 			else if(level>=CardSlot.GOLD && level<CardSlot.BLACK){
-				if(present_card.getLevel()>CardSlot.BLACK || present_card.getcardIndex()>strongest_card.getcardIndex()) {
+				if(present_card.getLevel()>=CardSlot.BLACK) {//if the strong card is normal number card, the strong card will be changed when the input is over black_card(includes black card)
 					setData(present_card,player_num);
+				}
+				else if(level==present_card.getLevel()) {//else, if strong card color is same as present_card color, compare the index of cards and set.
+					if(present_card.getcardIndex()>strongest_card.getcardIndex()) {
+						setData(present_card,player_num);
+					}
 				}
 			}
 			else if(level==CardSlot.BLACK) {
@@ -61,6 +71,7 @@ public class Comparator extends CardSlot {
 				}
 			}
 		}
+		System.out.println(strongest_card.getCardInfo()+winner+"wins");
 	}
 
 	public int getWinner() {
