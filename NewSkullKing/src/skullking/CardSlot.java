@@ -35,13 +35,13 @@ public class CardSlot extends JButton {
 				"scarymarry", "skullking"
 			};
 	
-	public CardSlot() { //for comparator. not need to change variables.
+	public CardSlot(int x) { //for comparator. not need to change variables.
 		System.out.println("생성자 for comparator");
 		slotIndex=-1;
 		cardIndex=-1;
 		canPick=false;
 		this.setSize(100,150); //card size
-		this.setLocation(Main.CENTER,150); //location
+		this.setLocation(Main.CENTER+x,150); //location
 	}
 	
 	
@@ -49,7 +49,8 @@ public class CardSlot extends JButton {
 		slotIndex=idx;
 		cardIndex=cardidx;
 		//setRolloverIcon(new ImageIcon("13.jpg")); //마우스 갖다댔을때 when rollover mouse
-		System.out.println(cardidx+"picked");
+		canPlay=true; //맨처음 만들어질때는 체크해줘야......................
+		
 		if(cardidx>=5 && cardidx<=56)
 			cardNum=(cardidx-5)%13+1;	//set card number when normal card
 		else
@@ -59,6 +60,7 @@ public class CardSlot extends JButton {
 		if(idx<round) { // if it is available to pick in this round (round5 : only can pick card[0]~card[4])
 			//can pick
 			canPick=true;
+			System.out.println(cardidx+"picked");
 			this.setIconImage(canPick); //set icon for card picture
 			this.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -81,7 +83,7 @@ public class CardSlot extends JButton {
 		slotIndex=idx;
 		cardIndex=cardidx;
 		//setRolloverIcon(new ImageIcon("13.jpg")); //마우스 갖다댔을때 when rollover mouse
-		System.out.println(cardidx+"picked");
+		//System.out.println(cardidx+"picked");
 		if(cardidx>=5 && cardidx<=56)
 			cardNum=(cardidx-5)%13+1;	//set card number when normal card
 		else
@@ -89,6 +91,7 @@ public class CardSlot extends JButton {
 		if(idx<round) { // if it is available to pick in this round (round5 : only can pick card[0]~card[4])
 			//can pick
 			canPick=true;
+			System.out.println(cardidx+"picked");
 			this.setIconImage(canPick); //set icon for card picture
 			this.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -124,7 +127,7 @@ public class CardSlot extends JButton {
 		}
 		else {
 			dontPickImg=new ImageIcon("dontPick.jpg");	//XXXX
-			System.out.println("\tbut not allowed");
+			//System.out.println("\tbut not allowed");
 			setIcon(dontPickImg);
 		}
 	}

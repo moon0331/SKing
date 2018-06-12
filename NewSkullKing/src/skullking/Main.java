@@ -61,7 +61,7 @@ public class Main extends JFrame{
 		gameScreen.setSize(Main.CENTER*2,800); //frame size
 		gameScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //close option
 		
-		JLabel roundNumber=new JLabel("roundNumber");		//label to represent round number
+		JLabel roundNumber=new JLabel("1round");		//label to represent round number
 		roundNumber.setFont(roundNumber.getFont().deriveFont(20.0f)); //font size 20
 		roundNumber.setSize(300,300); 	//label size
 		roundNumber.setLocation(Main.CENTER+150, 50);//location
@@ -75,55 +75,47 @@ public class Main extends JFrame{
 		
 		CardSlot[] cslot=new CardSlot[10]; //ten cards
 		
-		Comparator comparator_card=new Comparator(); //slot for most strong card. //make comparator = inheritance of cardslot?
+		Comparator comparator_card=new Comparator(-75); //slot for most strong card. //make comparator = inheritance of cardslot?
+		Comparator my_play_card=new Comparator(75); //to show what you played.
+		
+		comparator_card.addActionListener(new ActionListener() { //when click comparator_card, 
+			public void actionPerformed(ActionEvent ev) {
+				try {
+					System.out.println(comparator_card.getCardInfo()+" 낸 사람 : "+comparator_card.getWinner()); //print what card is strongest and who played.
+				}catch(Exception e) {
+					System.out.println("클릭했는데 정보 안뜸!");
+					e.printStackTrace();
+				}
+			}
+		});
 		
 		//comparator_card.setLocation(500,200);
 		gameScreen.add(comparator_card);	//now you can see comparator_card in screen
+		gameScreen.add(my_play_card);
+		
 		Random r=new Random();
 		for(int i=0;i<10;i++) {
-			cslot[i]=new CardSlot(i,round.getRound(), r.nextInt(CardSlot.NUM_OF_CARDS)); 	//make random card in cardslot
+			cslot[i]=new CardSlot(i,round.getRound(), r.nextInt(CardSlot.NUM_OF_CARDS));	//make random card in cardslot
 			gameScreen.add(cslot[i]);	//you can see that slot
 		}
 		
-		JTextField jt=new JTextField(10);	//text field to write int 
-		
-		
-		
-		
+		JTextField jt=new JTextField(10);	//text field to write int
 		jt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	//if string entered
 				//이 클래스 안에 넣기
 				try {
-					System.out.println("aaaaaaaaaaaaaaa");
-					
 					int lastGameWinner=comparator_card.getWinner(); //이전게임 승자 ?항상 0?
 					//System.out.println("저번판 이긴 사람은 "+lastGameWinner); 
 					int val=Integer.parseInt(jt.getText());	//change into int
 					System.out.println(val+"선택함"); 
 					
-					for(int computer=lastGameWinner; computer<4; computer++) { 
-						System.out.println("컴퓨터 "+computer+"의 차례");
-						while(true) {
-							if(computer==0) {
-								break;
-							}
-							CardSlot c=new CardSlot(0,0,r.nextInt(CardSlot.NUM_OF_CARDS));
-							System.out.println(c.getCardInfo()+"새로운 카드의 정보");
-							if(c.checkValidity(comparator_card)) {
-								comparator_card.updateCard(c,computer);  
-								if(c.cardIndex>=5&&c.cardIndex<=56) {
-									comparator_card.setFirstNumberCard(c);
-								}//if it is number card..
-								break;
-							}
-						}
-			 
-					} 
-					System.out.println("bbbbbbbbbbb");
-
+					/*for(int computer=1; computer<lastGameWinner; computer++) { //나 다음 컴퓨터가 카드 냄
+						comparator_card.updateCard(new CardSlot(0,0,r.nextInt(CardSlot.NUM_OF_CARDS)),computer); 
+					}*/
 					int rnd=round.getRound();
 					
 					if(val>=rnd) return;
+					
 					boolean tfval=false;
 					for(int k=0;k<10;k++) {
 						System.out.println(k+"번째 카드체크"+cslot[k].checkValidity(comparator_card));
@@ -134,45 +126,46 @@ public class Main extends JFrame{
 						}
 					}
 					if(!tfval) {
-						cslot[val].setCanPlay(true);
+						if(!cslot[val].isVisible())
+							cslot[val].setCanPlay(true);
 						System.out.println("모든 카드 가능");
-					} 
-					
-					System.out.println("cccccccccccc");
-			
-					if(cslot[val].getCanPick(comparator_card)) {//if the card is pickable
+					}
+					System.out.println("=========================================================");
+					System.out.println(comparator_card.getCardInfo()+"현재 comparator카드정보");
+					System.out.println("=========================================================");
+					if(cslot[val].getCanPick(comparator_card) && cslot[val].isVisible()) {			//if the card is pickable
+						//지금 사라진 카드도 선택하면 되게 됨.
 						//check level
 						//comparator_card.updateCard(cslot[val]); //need to update comparator when more powerful card occurs.(resolve it!)
-						System.out.println("ddddddddddddd");
 
+						for(int i=0;i<10;i++) {
+							System.out.println("i번째는..........."+cslot[i].isVisible());
+						}
+						
 						System.out.println("컴퓨터 카드 냄");
-						comparator_card.updateCard(cslot[val],0);  //input for player 0 : user 
-						if(cslot[val].cardIndex>=5&&cslot[val].cardIndex<=56) {
-							comparator_card.setFirstNumberCard(cslot[val]);
-						}//if it is number card..
+						comparator_card.updateCard(cslot[val],0); //input for player 0 : user
+						my_play_card.updateCard(cslot[val]);
 						System.out.println("현재 comparator에 놓인 카드는 "+comparator_card.getCardInfo());
 						
-						for(int computer=1; computer<lastGameWinner; computer++) { 
+						//for문 현재 안돌아감
+						for(int computer=1; computer<4;/*computer%NUM_OF_PLAYER<lastGameWinner;*/ computer++) {
 							System.out.println("컴퓨터 "+computer+"의 차례");
 							while(true) {
 								CardSlot c=new CardSlot(0,0,r.nextInt(CardSlot.NUM_OF_CARDS));
-								System.out.println(c.getCardInfo()+"새로운 카드의 정보"); 
+								System.out.println(c.getCardInfo()+"새로운 카드의 정보");
 								if(c.checkValidity(comparator_card)) {
-									comparator_card.updateCard(c,computer); 
-									if(c.cardIndex>=5&&c.cardIndex<=56) {
-										comparator_card.setFirstNumberCard(c);
-									}//if it is number card..
+									comparator_card.updateCard(c,computer);
 									break;
 								}
 							}
-				 
 						}
-						
-						
 						statusLabel.setText(cslot[val].getCardInfo()+" picked. "
-						+"You may "+comparator_card.getWinOrLose(0)); //change text
+						+"you win this game? : "+comparator_card.getWinOrLose(0)); //change text
+						cslot[val].setCanPlay(false);
 						cslot[val].setVisible(false); //disable to pick slot's card
 						round.endTurn();
+						/*ImageIcon lastWinCardIcon=(ImageIcon)comparator_card.getIcon();
+						System.out.println("방금 경기 승리한 카드"+lastWinCardIcon.getDescription());*/
 						//calculate result and end turn.
 						//round++;
 						//if(round==11) calResult();
@@ -189,10 +182,10 @@ public class Main extends JFrame{
 							System.out.println(rnd+"라운드 새로 시작");
 							for(int i=0;i<10;i++) {	//카드세팅
 								cslot[i].setVisible(false);
-								System.out.println("============================================================");
+								//System.out.println("============================================================");
 								cslot[i].setCardSlot(i, rnd+1, r.nextInt(CardSlot.NUM_OF_CARDS)); //새 라운드에서 카드 받음
 								cslot[i].setVisible(true);
-								System.out.println("카드세팅완료!");
+								//System.out.println("카드세팅완료!");
 							}
 
 							for(int computer=1; computer<NUM_OF_PLAYER;computer++) { //예측
@@ -207,8 +200,8 @@ public class Main extends JFrame{
 								//여기는 카드 내는것. 사람이 내고나서 다른 컴퓨터들도 카드를 내야 함.
 								comparator_card.updateCard(new CardSlot(0,0,r.nextInt(CardSlot.NUM_OF_CARDS)),computer); 
 							}
-							
 							round.setRound(rnd+1);
+							roundNumber.setText((1+rnd)+"round");
 						}
 					}
 					System.out.println("process done");
