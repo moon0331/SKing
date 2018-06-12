@@ -210,7 +210,8 @@ public class Main extends JFrame{
 						//round++;
 						//if(round==11) calResult();
 						if(round.isRoundEnd()) {
-							//종료시 이벤트 처리..................점수계산
+							System.out.println(round.getRound()+"round종료");
+							//종료시 이벤트 처리..................점수계산 안함!!!!
 							rnd=round.getRound(); ////////////////////////////round 수정함
 							lastGameWinner=comparator_card.getWinner();
 							System.out.println("이번판의 승자는 "+lastGameWinner);
@@ -218,6 +219,9 @@ public class Main extends JFrame{
 								p[i].calScore(rnd);
 								System.out.println("player"+p[i].getPlayerName()+"의 현재까지 점수는 "+p[i].getScore());
 								// 화면에 띄워주기
+							}
+							if(round.getRound()==10) { 
+								gameScreen.setVisible(false); //점수 보여주고 나중에 꺼지기
 							}
 							System.out.println(rnd+"라운드 새로 시작");
 							deck.resetCardDeck();
