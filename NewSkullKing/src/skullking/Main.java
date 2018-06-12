@@ -62,7 +62,8 @@ public class Main extends JFrame{
 				//이 클래스 안에 넣기
 				try {
 					int val=Integer.parseInt(jt.getText());	//change into int
-					System.out.println(val);
+					System.out.println(val); 
+					
 					if(cslot[val].getCanPick(comparator_card)) {			//if the card is pickable
 						//check level
 						//comparator_card.updateCard(cslot[val]); //need to update comparator when more powerful card occurs.(resolve it!)
