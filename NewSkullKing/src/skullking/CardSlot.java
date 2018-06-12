@@ -155,11 +155,8 @@ public class CardSlot extends JButton {
 	}
 	
 	public boolean checkValidity(Comparator C) {
-<<<<<<< HEAD
 		System.out.println("check validity");
 		System.out.println("comparator level : "+C.getLevel()+CardSlot.cardLevelString[C.getLevel()]);
-=======
->>>>>>> d1c13ff8e6f40712519e3f08c977facb8b9dc0bb
 		
 		int level=C.getLevel();
 		if(level>=CardSlot.GOLD && level<=CardSlot.BLACK) {//if first filed num card color is same as mine, it can be played
