@@ -81,27 +81,49 @@ public class Main extends JFrame{
 		gameScreen.add(comparator_card);	//now you can see comparator_card in screen
 		Random r=new Random();
 		for(int i=0;i<10;i++) {
-			cslot[i]=new CardSlot(i,round.getRound(), r.nextInt(CardSlot.NUM_OF_CARDS));	//make random card in cardslot
+			cslot[i]=new CardSlot(i,round.getRound(), r.nextInt(CardSlot.NUM_OF_CARDS)); 	//make random card in cardslot
 			gameScreen.add(cslot[i]);	//you can see that slot
 		}
 		
-		JTextField jt=new JTextField(10);	//text field to write int
+		JTextField jt=new JTextField(10);	//text field to write int 
+		
+		
+		
+		
 		jt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	//if string entered
 				//이 클래스 안에 넣기
 				try {
+					System.out.println("aaaaaaaaaaaaaaa");
+					
 					int lastGameWinner=comparator_card.getWinner(); //이전게임 승자 ?항상 0?
 					//System.out.println("저번판 이긴 사람은 "+lastGameWinner); 
 					int val=Integer.parseInt(jt.getText());	//change into int
 					System.out.println(val+"선택함"); 
 					
-					/*for(int computer=1; computer<lastGameWinner; computer++) { //나 다음 컴퓨터가 카드 냄
-						comparator_card.updateCard(new CardSlot(0,0,r.nextInt(CardSlot.NUM_OF_CARDS)),computer); 
-					}*/
+					for(int computer=lastGameWinner; computer<4; computer++) { 
+						System.out.println("컴퓨터 "+computer+"의 차례");
+						while(true) {
+							if(computer==0) {
+								break;
+							}
+							CardSlot c=new CardSlot(0,0,r.nextInt(CardSlot.NUM_OF_CARDS));
+							System.out.println(c.getCardInfo()+"새로운 카드의 정보");
+							if(c.checkValidity(comparator_card)) {
+								comparator_card.updateCard(c,computer);  
+								if(c.cardIndex>=5&&c.cardIndex<=56) {
+									comparator_card.setFirstNumberCard(c);
+								}//if it is number card..
+								break;
+							}
+						}
+			 
+					} 
+					System.out.println("bbbbbbbbbbb");
+
 					int rnd=round.getRound();
 					
 					if(val>=rnd) return;
-					
 					boolean tfval=false;
 					for(int k=0;k<10;k++) {
 						System.out.println(k+"번째 카드체크"+cslot[k].checkValidity(comparator_card));
@@ -114,30 +136,39 @@ public class Main extends JFrame{
 					if(!tfval) {
 						cslot[val].setCanPlay(true);
 						System.out.println("모든 카드 가능");
-					}
-					System.out.println("=========================================================");
-					System.out.println(comparator_card.getCardInfo()+"현재 comparator카드정보");
-					System.out.println("=========================================================");
-					if(cslot[val].getCanPick(comparator_card)) {			//if the card is pickable
+					} 
+					
+					System.out.println("cccccccccccc");
+			
+					if(cslot[val].getCanPick(comparator_card)) {//if the card is pickable
 						//check level
 						//comparator_card.updateCard(cslot[val]); //need to update comparator when more powerful card occurs.(resolve it!)
+						System.out.println("ddddddddddddd");
 
 						System.out.println("컴퓨터 카드 냄");
-						comparator_card.updateCard(cslot[val],0); //input for player 0 : user
+						comparator_card.updateCard(cslot[val],0);  //input for player 0 : user 
+						if(cslot[val].cardIndex>=5&&cslot[val].cardIndex<=56) {
+							comparator_card.setFirstNumberCard(cslot[val]);
+						}//if it is number card..
 						System.out.println("현재 comparator에 놓인 카드는 "+comparator_card.getCardInfo());
 						
-						//for문 현재 안돌아감
-						for(int computer=1; computer<4;/*computer%NUM_OF_PLAYER<lastGameWinner;*/ computer++) {
+						for(int computer=1; computer<lastGameWinner; computer++) { 
 							System.out.println("컴퓨터 "+computer+"의 차례");
 							while(true) {
 								CardSlot c=new CardSlot(0,0,r.nextInt(CardSlot.NUM_OF_CARDS));
-								System.out.println(c.getCardInfo()+"새로운 카드의 정보");
+								System.out.println(c.getCardInfo()+"새로운 카드의 정보"); 
 								if(c.checkValidity(comparator_card)) {
-									comparator_card.updateCard(c,computer);
+									comparator_card.updateCard(c,computer); 
+									if(c.cardIndex>=5&&c.cardIndex<=56) {
+										comparator_card.setFirstNumberCard(c);
+									}//if it is number card..
 									break;
 								}
 							}
+				 
 						}
+						
+						
 						statusLabel.setText(cslot[val].getCardInfo()+" picked. "
 						+"You may "+comparator_card.getWinOrLose(0)); //change text
 						cslot[val].setVisible(false); //disable to pick slot's card
