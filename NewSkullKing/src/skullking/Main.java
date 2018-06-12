@@ -5,8 +5,29 @@ import java.awt.event.*;
 import java.util.Random;
 import java.util.Scanner;
 
-class Game{
+// firstNumber 설정  - 게임마다 - 처음 숫자 나왔을때 제한시키는 comparator_card.setFirstNumberCard() 사용해야함.
+// 컴퓨터 플레이어가 어떻게 카드를 내는가
+// 점수 계산 및 종료(종료 언제 하는지 확인)
+
+class GameRound{
 	int round;
+	int remained;
+	public GameRound(int val) {
+		setRound(val);
+	}
+	public void setRound(int r) {
+		round=r;
+		remained=r;
+	}
+	public int getRound() {
+		return round;
+	}
+	public boolean isRoundEnd() {
+		return remained==0;
+	}
+	public void endTurn() {
+		remained-=1;
+	}
 }
 
 public class Main extends JFrame{
@@ -27,6 +48,9 @@ public class Main extends JFrame{
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		GameRound round=new GameRound(1);
+		
 		JFrame gameScreen=new JFrame(); //my frame
 		gameScreen.setLayout(null); //not use layout manager
 		gameScreen.setSize(Main.CENTER*2,800); //frame size
@@ -52,7 +76,7 @@ public class Main extends JFrame{
 		gameScreen.add(comparator_card);	//now you can see comparator_card in screen
 		Random r=new Random();
 		for(int i=0;i<10;i++) {
-			cslot[i]=new CardSlot(i,5, r.nextInt(CardSlot.NUM_OF_CARDS));	//make random card in cardslot
+			cslot[i]=new CardSlot(i,round.getRound(), r.nextInt(CardSlot.NUM_OF_CARDS));	//make random card in cardslot
 			gameScreen.add(cslot[i]);	//you can see that slot
 		}
 		
@@ -62,7 +86,18 @@ public class Main extends JFrame{
 				//이 클래스 안에 넣기
 				try {
 					int val=Integer.parseInt(jt.getText());	//change into int
-					System.out.println(val); 
+					System.out.println(val+"선택함"); 
+					
+					boolean tfval=false;
+					for(int k=0;k<10;k++) {
+						if(cslot[k].checkValidity(comparator_card)) {
+							tfval=true;
+							break;
+						}
+					}
+					if(!tfval) {
+						cslot[val].setCanPlay(true);
+					}
 					
 					if(cslot[val].getCanPick(comparator_card)) {			//if the card is pickable
 						//check level
@@ -71,16 +106,22 @@ public class Main extends JFrame{
 						statusLabel.setText(cslot[val].getCardInfo()+" picked. "
 						+"You may "+comparator_card.getWinOrLose(0)); //change text
 						cslot[val].setVisible(false); //disable to pick slot's card
+						round.endTurn();
 						//calculate result and end turn.
 						//round++;
 						//if(round==11) calResult();
-						/*if(remainCard==0) {
+						if(round.isRoundEnd()) {
+							//종료시 이벤트 처리..................점수계산
+							int rnd=round.getRound();
 							for(int i=0;i<10;i++) {
 								cslot[i].setVisible(false);
-								cslot[i].setCardSlot(i, 6, r.nextInt(CardSlot.NUM_OF_CARDS));
+								System.out.println(rnd+"라운드 새로 시작");
+								cslot[i].setCardSlot(i, rnd+1, r.nextInt(CardSlot.NUM_OF_CARDS)); //새 라운드에서 카드 받음
 								cslot[i].setVisible(true);
+								//comparator 초기화해야함....................
 							}
-						}*/ //카드 재배치
+							round.setRound(rnd+1);
+						}
 					}
 				} catch(Exception ex){
 					//승수예측처리
