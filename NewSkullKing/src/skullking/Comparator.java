@@ -29,7 +29,7 @@ public class Comparator extends CardSlot {
 	public void setData(CardSlot present_card, int player_num) {
 		System.out.println("새로운 이미지로 update : "+present_card.getCardInfo());
 		strongest_card=present_card;
-		winner=player_num;
+		winner=player_num; 
 		super.updateCard(present_card);
 	}
 	
