@@ -10,7 +10,7 @@ import java.util.Scanner;
 // 점수 계산 및 종료(종료 언제 하는지 확인)
 
 class predictWinTextField extends JTextField{
-	private boolean locked;
+	private boolean locked; //OK to predict?
 	private int[] predict;
 	private int round;
 	private Random r;
@@ -38,6 +38,12 @@ class predictWinTextField extends JTextField{
 	}
 	public int getRound() {
 		return round;
+	}
+	public boolean isLocked() {
+		return locked;
+	}
+	public void setLock(boolean TF) {
+		locked=TF;
 	}
 }
 
