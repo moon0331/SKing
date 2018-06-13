@@ -2,7 +2,7 @@ package skullking;
 
 import javax.swing.JPanel;
 
-public class Player extends JPanel{
+public class Player{
 	static String[] nameString= {"AAA","BBB","CCC","DDD","FFF"};
 	String name;
 	boolean computerPlayer;
