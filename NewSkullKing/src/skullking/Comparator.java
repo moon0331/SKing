@@ -58,7 +58,8 @@ public class Comparator extends CardSlot {
 			System.out.println("strong card is none, 따라서 이긴다!");
 			strongest_card=present_card; 
 			winner=player_num;
-			setData(present_card,player_num);
+			setData(present_card,player_num);  
+		
 		} else {
 			System.out.println(strongest_card.getCardInfo()+"에 대항하여 "+player_num+"이 "+present_card.getCardInfo()+"를 냈다! 과연...."); //카드정보 뽑는 메서드?
 			int level=strongest_card.getLevel();
@@ -95,6 +96,7 @@ public class Comparator extends CardSlot {
 					setData(present_card,player_num);
 				}
 			}
+
 		}
 		System.out.println(strongest_card.getCardInfo()+"를 낸 "+winner+" wins");
 	}
