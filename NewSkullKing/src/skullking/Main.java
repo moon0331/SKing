@@ -217,6 +217,10 @@ public class Main extends JFrame{
 			public void actionPerformed(ActionEvent e) {	//if string entered
 				//이 클래스 안에 넣기
 				try {
+					if(predField.isLocked()) {
+						System.out.println("You didn't predict win");
+						return;
+					}
 					int lastGameWinner=comparator_card.getWinner(); //이전게임 승자 ?항상 0?
 					//System.out.println("저번판 이긴 사람은 "+lastGameWinner); 
 					int val=Integer.parseInt(jt.getText());	//change into int
