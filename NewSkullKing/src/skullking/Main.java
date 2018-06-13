@@ -249,6 +249,7 @@ public class Main extends JFrame{
 						System.out.println("You didn't predict win");
 						return;
 					}
+					System.out.println("사람이 카드 냄!------------------------------------------------------");
 					int lastGameWinner=comparator_card.getWinner(); //이전게임 승자 ?항상 0?
 					System.out.println("저번판 이긴 사람은 "+lastGameWinner); 
 					int val=Integer.parseInt(jt.getText());	//change into int
@@ -261,8 +262,11 @@ public class Main extends JFrame{
 						CardSlot c=new CardSlot(0,0,comCardNum);
 						comparator_card.updateCard(c,computer); 
 						if(c.getCardIndex()>=5&&c.getCardIndex()<=56 && comparator_card.getFirstNumberCard()==null) {
-							rule_card.setFirstNumberCard(c); 
+							System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+							rule_card.setFirstNumberCard(c);
+							//rule_card.FupdateCard(comparator_card.getFirstNumberCard()); //여긴가?
 							rule_card.updateCard(comparator_card.getFirstNumberCard()); //여긴가?
+							//System.out.println("first : "+comparator_card.getFirstNumberCard().getCardInfo());
 							try {
 								System.out.println("[플레이어 전 ]firstnumber : "+comparator_card.getFirstNumberCard().getCardIndex());
 							} catch(Exception ex) {
@@ -281,6 +285,7 @@ public class Main extends JFrame{
 					
 					boolean tfval=false;
 					for(int k=0;k<10;k++) {
+						if(!cslot[k].getCanPick()) break;
 						boolean isOK=cslot[k].checkValidity(comparator_card);
 						System.out.println(k+"번째 카드낼 수 있는지 : "+isOK);
 						if(isOK) {
@@ -300,9 +305,9 @@ public class Main extends JFrame{
 						//check level
 						//comparator_card.updateCard(cslot[val]); //need to update comparator when more powerful card occurs.(resolve it!)
 
-						for(int i=0;i<10;i++) {
+						/*for(int i=0;i<10;i++) {
 							System.out.println(i+"번째 카드 낼수 있는가?"+cslot[i].isVisible());
-						}
+						}*/
 						
 						System.out.println("사용자 카드 내기 시작.");
 						comparator_card.updateCard(cslot[val],0); //input for player 0 : user
@@ -312,7 +317,8 @@ public class Main extends JFrame{
 							System.out.println("firstnumber : "+comparator_card.getFirstNumberCard().getCardIndex());
 						}
 						
-						
+
+						//rule_card.FupdateCard(comparator_card.getFirstNumberCard()); //여긴가?
 						rule_card.updateCard(comparator_card.getFirstNumberCard()); //여긴가?
 						System.out.println("현재 comparator에 놓인 카드는 "+comparator_card.getCardInfo());
 
@@ -333,6 +339,7 @@ public class Main extends JFrame{
 									comparator_card.updateCard(c,computer);
 									if(c.getCardIndex()>=5&&c.getCardIndex()<=56 && comparator_card.getFirstNumberCard()==null) {
 										rule_card.setFirstNumberCard(c); 
+										//rule_card.FupdateCard(comparator_card.getFirstNumberCard()); //여긴가?
 										rule_card.updateCard(comparator_card.getFirstNumberCard()); //여긴가?
 										try {
 											System.out.println("[플레이어 후 ]firstnumber : "+comparator_card.getFirstNumberCard().getCardIndex());
@@ -378,8 +385,7 @@ public class Main extends JFrame{
 							lastGameWinner=comparator_card.getWinner();
 							System.out.println("이번판의 승자는 "+lastGameWinner);
 							for(int i=0;i<NUM_OF_PLAYER; i++) {
-								int score=p[i].calScore(rnd);
-								p[i].updateScore(score);
+								p[i].updateScore(rnd);
 								System.out.println("player"+p[i].getPlayerName()+"의 현재까지 점수는 "+p[i].getScore());
 								// 화면에 띄워주기
 							}
@@ -409,27 +415,30 @@ public class Main extends JFrame{
 								//playerNum : 이전게임승자 ~ 플레이어 전까지
 							}*/
 							
-							//
+							//rule_card.setIcon(new CardSlot(0,0,0).getImage());
 							
 							for(int computer=lastGameWinner; computer<NUM_OF_PLAYER; computer++) {
+								if(computer==0) continue;
 								//여기는 카드 내는것. 사람이 내고나서 다른 컴퓨터들도 카드를 내야 함.
 								while(true) {
 									CardSlot newCard=new CardSlot(0,0,deck.getCard());
 									if(newCard.checkValidity(comparator_card)) {
-										comparator_card.updateCard(new CardSlot(0,0,deck.getCard()),computer);
+										comparator_card.updateCard(newCard,computer);
 										break;
 									} else {
 										deck.setFree(newCard.getCardIndex());
 									}
 								}
-								System.out.println("computer picked!");
 							}
+							System.out.println("computer picked!");
 							last_game_winner.setText("Last Game Winner : "+lastGameWinner);
 							round.setRound(rnd+1);
 							roundNumber.setText((1+rnd)+"round");
 							predField.setRound(rnd+1);
 						}
+						comparator_card.forceUpdateCard();
 					}
+					rule_card.updateCard(new CardSlot(0,0,deck.getCard()));
 					System.out.println("process done");
 				} catch(Exception ex){
 					//승수예측처리

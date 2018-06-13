@@ -7,7 +7,7 @@ public class Comparator extends CardSlot {
 
 	public Comparator(int x) {
 		super(x);  
-		winner=0;
+		winner=1;
 		strongest_card=null;
 		firstNumber=null;
 		System.out.println(this.getLevel()+"레벨");
@@ -38,6 +38,17 @@ public class Comparator extends CardSlot {
 		if(winner==playerNum) return true;
 		else return false;
 		
+	}
+	
+	public void forceUpdateCard() {
+		System.out.println("강제 업데이트");
+		updateCard(strongest_card);
+	}
+	
+	public void FupdateCard(CardSlot present_card) {
+		if(firstNumber==null) {
+			super.updateCard(present_card);
+		}
 	}
 	
 	public void updateCard(CardSlot present_card, int player_num) { //update card picture, but alert strongest card and its owner
@@ -72,13 +83,13 @@ public class Comparator extends CardSlot {
 					setData(present_card,player_num);
 				}
 				else if(level==present_card.getLevel()) {//else, if strong card color is same as present_card color, compare the index of cards and set.
-					if(present_card.getcardIndex()>strongest_card.getcardIndex()) {
+					if(present_card.getCardIndex()>strongest_card.getCardIndex()) {
 						setData(present_card,player_num);
 					}
 				}
 			}
 			else if(level==CardSlot.BLACK) {
-				if(present_card.getLevel()>level || present_card.getcardIndex()>strongest_card.getcardIndex()) {
+				if(present_card.getLevel()>level || present_card.getCardIndex()>strongest_card.getCardIndex()) {
 					setData(present_card,player_num);
 				}
 			}
@@ -100,6 +111,7 @@ public class Comparator extends CardSlot {
 
 		}
 		System.out.println(strongest_card.getCardInfo()+"를 낸 "+winner+" wins");
+		super.setIcon(strongest_card.getIcon());
 	}
 
 	public int getWinner() {

@@ -145,7 +145,13 @@ public class CardSlot extends JButton {
 	
 	public boolean checkValidity(Comparator C) {
 		//System.out.println("====check validity start====");
-		System.out.println("comparator level : "+CardSlot.cardLevelString[C.getLevel()]+C.getLevel());
+		System.out.println(C.getFirstNumberCard());
+		try {
+			System.out.println("comparator level : "+
+					CardSlot.cardLevelString[C.getFirstNumberCard().getLevel()]+C.getFirstNumberCard().getLevel());
+		} catch(Exception ex){
+			System.out.println("comparator level is none");
+		}
 		try {
 			System.out.println("현재 comparator의 first card는 "+C.getFirstNumberCard().getCardInfo());
 		} catch(Exception e) {
@@ -170,6 +176,10 @@ public class CardSlot extends JButton {
 		//System.out.println("낼수 있나? : "+canPlay);
 		//System.out.println("====check validity end====");
 		return canPlay;
+	}
+	
+	public boolean getCanPick() {
+		return canPick;
 	}
 	
 	public boolean getCanPlay() {
