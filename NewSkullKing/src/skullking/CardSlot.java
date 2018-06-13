@@ -146,7 +146,11 @@ public class CardSlot extends JButton {
 	public boolean checkValidity(Comparator C) {
 		//System.out.println("====check validity start====");
 		System.out.println("comparator level : "+CardSlot.cardLevelString[C.getLevel()]+C.getLevel());
-		System.out.println("현재 comparator의 first card는 "+C.getFirstNumberCard());
+		try {
+			System.out.println("현재 comparator의 first card는 "+C.getFirstNumberCard().getCardInfo());
+		} catch(Exception e) {
+			System.out.println("현재 comparator의 first card는 "+"null");
+		}
 		int level=1;
 		if(C.getFirstNumberCard()!=null) {
 			level=C.getFirstNumberCard().getLevel();

@@ -34,6 +34,7 @@ public class Comparator extends CardSlot {
 	}
 	
 	public boolean getWinOrLose(int playerNum) {
+		System.out.println("winner : "+winner+"/ 플레이어 : ㅁㅁㅁㅁㅁㅁㅁㅁㅁ"+playerNum);
 		if(winner==playerNum) return true;
 		else return false;
 		
