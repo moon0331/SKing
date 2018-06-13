@@ -295,6 +295,7 @@ public class Main extends JFrame{
 								gameScreen.add(c);
 								System.out.println(c.getCardInfo()+"새로운 카드의 정보");
 								if(c.checkValidity(comparator_card)) {
+									System.out.println("player "+computer+"가 그 카드 냄");
 									comparator_card.updateCard(c,computer);
 									break;
 								} else {
