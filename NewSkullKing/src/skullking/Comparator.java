@@ -7,7 +7,7 @@ public class Comparator extends CardSlot {
 
 	public Comparator(int x) {
 		super(x);  
-		winner=-1;
+		winner=0;
 		strongest_card=null;
 		firstNumber=null;
 		System.out.println(this.getLevel()+"레벨");

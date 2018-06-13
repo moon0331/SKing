@@ -144,14 +144,14 @@ public class CardSlot extends JButton {
 	}
 	
 	public boolean checkValidity(Comparator C) {
-		System.out.println("====check validity start====");
+		//System.out.println("====check validity start====");
 		System.out.println("comparator level : "+C.getLevel()+CardSlot.cardLevelString[C.getLevel()]);
 		System.out.println(C.getFirstNumberCard());
 		int level=1;
 		if(C.getFirstNumberCard()!=null) {
 			level=C.getFirstNumberCard().getLevel();
 		}
-		System.out.println(level+"현재 지배하는 레벨");
+		System.out.println(level+"firstCard가 현재 지배하는 레벨");
 		if(level>=CardSlot.GOLD && level<=CardSlot.BLACK) {//if first filed num card color is same as mine, it can be played
 			if(level==this.getLevel()) {
 				canPlay=true;
@@ -164,7 +164,7 @@ public class CardSlot extends JButton {
 			canPlay=true;
 		}
 		//System.out.println("낼수 있나? : "+canPlay);
-		System.out.println("====check validity end====");
+		//System.out.println("====check validity end====");
 		return canPlay;
 	}
 	
@@ -188,9 +188,10 @@ public class CardSlot extends JButton {
 	}
 	
 	public void updateCard(CardSlot cslot) {	//update card image (used in comparator ; need to move?)
+		if(cslot==null) return;
 		System.out.println("update card!!!! by ");
 		ImageIcon icon=cslot.getCanPickImg();
-		System.out.println("icon name : "+icon.getDescription());
+		//System.out.println("icon name : "+icon.getDescription());
 		setIcon(icon);
 	}
 	public int getCardIndex() {

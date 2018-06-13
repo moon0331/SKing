@@ -149,25 +149,32 @@ public class Main extends JFrame{
 		JLabel strongest_card_here=new JLabel("Strongest Card");
 		strongest_card_here.setFont(strongest_card_here.getFont().deriveFont(15.0f));
 		strongest_card_here.setSize(300,300);
-		strongest_card_here.setLocation(Main.CENTER-75,-20);
+		strongest_card_here.setLocation(Main.CENTER-150,-20);
 		gameScreen.add(strongest_card_here);
+		
+		JLabel rule_card_here=new JLabel("Rule Card");
+		rule_card_here.setFont(strongest_card_here.getFont().deriveFont(15.0f));
+		rule_card_here.setSize(300,300);
+		rule_card_here.setLocation(Main.CENTER,-20);
+		gameScreen.add(rule_card_here);
+		
 		
 		JLabel your_card_here=new JLabel("Your Card");
 		your_card_here.setFont(your_card_here.getFont().deriveFont(15.0f));
 		your_card_here.setSize(300,300);
-		your_card_here.setLocation(Main.CENTER+90,-20);
+		your_card_here.setLocation(Main.CENTER+150,-20);
 		gameScreen.add(your_card_here);
 		
 		JLabel last_game_winner=new JLabel("Last Game Winner");
 		last_game_winner.setFont(last_game_winner.getFont().deriveFont(15.0f));
 		last_game_winner.setSize(300,300);
-		last_game_winner.setLocation(Main.CENTER+200,-20);
+		last_game_winner.setLocation(Main.CENTER+300,-20);
 		gameScreen.add(last_game_winner);
 		
 		JLabel what_was_winner_card=new JLabel("Last Winning Card: ");
 		what_was_winner_card.setFont(what_was_winner_card.getFont().deriveFont(15.0f));
 		what_was_winner_card.setSize(300,300);
-		what_was_winner_card.setLocation(Main.CENTER+200,20);
+		what_was_winner_card.setLocation(Main.CENTER+300,20);
 		gameScreen.add(what_was_winner_card);
 		
 		JLabel winStatus=new JLabel("real win/prediction : ");
@@ -182,8 +189,9 @@ public class Main extends JFrame{
 		
 		CardSlot[] cslot=new CardSlot[10]; //ten cards
 		
-		Comparator comparator_card=new Comparator(-75); //slot for most strong card. //make comparator = inheritance of cardslot?
-		Comparator my_play_card=new Comparator(75); //to show what you played.
+		Comparator comparator_card=new Comparator(-150); //slot for most strong card. //make comparator = inheritance of cardslot?
+		Comparator my_play_card=new Comparator(150); //to show what you played.
+		Comparator rule_card=new Comparator(0); //룰이 되는 카드
 		
 		comparator_card.addActionListener(new ActionListener() { //when click comparator_card, 
 			public void actionPerformed(ActionEvent ev) {
@@ -199,6 +207,7 @@ public class Main extends JFrame{
 		//comparator_card.setLocation(500,200);
 		gameScreen.add(comparator_card);	//now you can see comparator_card in screen
 		gameScreen.add(my_play_card);
+		gameScreen.add(rule_card);
 		
 		CardDeck deck=new CardDeck();
 		
@@ -214,7 +223,7 @@ public class Main extends JFrame{
 			public void actionPerformed(ActionEvent ev) { //예상승수 입력하는 이벤트
 				try {
 					int inputData=Integer.parseInt(predField.getText());
-					System.out.println(inputData+"입력했음 player가");
+					//System.out.println(inputData+"입력했음 player가");
 					if(inputData>predField.getRound())
 						return;
 					predField.setPredictionValue(inputData,0);
@@ -239,13 +248,21 @@ public class Main extends JFrame{
 						return;
 					}
 					int lastGameWinner=comparator_card.getWinner(); //이전게임 승자 ?항상 0?
-					//System.out.println("저번판 이긴 사람은 "+lastGameWinner); 
+					System.out.println("저번판 이긴 사람은 "+lastGameWinner); 
 					int val=Integer.parseInt(jt.getText());	//change into int
 					System.out.println("==================="+val+"번 카드 선택함================="); 
 					
-					/*for(int computer=1; computer<lastGameWinner; computer++) { //나 다음 컴퓨터가 카드 냄
-						comparator_card.updateCard(new CardSlot(0,0,deck.getCard()),computer); 
-					}*/
+					for(int computer=lastGameWinner; computer<4; computer++) { //나 다음 컴퓨터가 카드 냄
+						if(computer==0) break;
+						int comCardNum=deck.getCard();
+						System.out.println(comCardNum+"번 뽑음 (플레이어 이후)@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+						CardSlot c=new CardSlot(0,0,comCardNum);
+						comparator_card.updateCard(c,computer); 
+						if(c.cardIndex>=5&&c.cardIndex<=56 && comparator_card.getFirstNumberCard()==null) {
+							comparator_card.setFirstNumberCard(c);
+						}
+					}
+					
 					int rnd=round.getRound(); //라운드 체크
 					
 					if(val>=rnd) { 
@@ -265,7 +282,7 @@ public class Main extends JFrame{
 					if(!tfval) {
 						if(cslot[val].isVisible())
 							cslot[val].setCanPlay(true);
-						System.out.println("모든 카드 가능");
+						System.out.println("exception : 모든 카드 가능");
 					}
 					System.out.println(comparator_card.getCardInfo()+"는 현재  comp에 놓인 카드의 카드정보");
 					
@@ -275,27 +292,28 @@ public class Main extends JFrame{
 						//comparator_card.updateCard(cslot[val]); //need to update comparator when more powerful card occurs.(resolve it!)
 
 						for(int i=0;i<10;i++) {
-							System.out.println(i+"번째는..........."+cslot[i].isVisible());
+							System.out.println(i+"번째 카드는 는..........."+cslot[i].isVisible());
 						}
 						
 						System.out.println("컴퓨터 카드 냄");
 						comparator_card.updateCard(cslot[val],0); //input for player 0 : user
 						my_play_card.updateCard(cslot[val]);
+						//rule_card.updateCard(comparator_card.getFirstNumberCard(),0); //여긴가?
 						System.out.println("현재 comparator에 놓인 카드는 "+comparator_card.getCardInfo());
 						
-						for(int computer=1; computer<4;/*computer%NUM_OF_PLAYER<lastGameWinner;*/ computer++) {
+						for(int computer=1; computer<lastGameWinner;/*computer%NUM_OF_PLAYER<lastGameWinner;*/ computer++) {
 							System.out.println("컴퓨터 "+computer+"의 차례");
 							while(true) {
 								int comCardNum=deck.getCard();
-								System.out.println(comCardNum+"번 뽑음@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+								System.out.println(comCardNum+"번 뽑음 (player 전)@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 								CardSlot c=new CardSlot(0,0,comCardNum);
-								c.setLocation(100,100);
+								/*c.setLocation(100,100);
 								c.setSize(50,75);
 								c.setVisible(true);
-								gameScreen.add(c);
+								gameScreen.add(c);*/
 								System.out.println(c.getCardInfo()+"새로운 카드의 정보");
 								if(c.checkValidity(comparator_card)) {
-									System.out.println("player "+computer+"가 그 카드 냄");
+									System.out.println("player "+computer+"가 그 카드 업데이트");
 									comparator_card.updateCard(c,computer);
 									break;
 								} else {
