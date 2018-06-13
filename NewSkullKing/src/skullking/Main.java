@@ -250,12 +250,12 @@ public class Main extends JFrame{
 					int lastGameWinner=comparator_card.getWinner(); //이전게임 승자 ?항상 0?
 					System.out.println("저번판 이긴 사람은 "+lastGameWinner); 
 					int val=Integer.parseInt(jt.getText());	//change into int
-					System.out.println("==================="+val+"번 카드 선택함================="); 
+					System.out.println("==================="+val+"번 카드 선택하기 전에 컴퓨터가 냄================="); 
 					
 					for(int computer=lastGameWinner; computer<4; computer++) { //나 다음 컴퓨터가 카드 냄
-						if(computer==0) break;
+						if(computer==0) continue;
 						int comCardNum=deck.getCard();
-						System.out.println(comCardNum+"번 뽑음 (플레이어 전)@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+						System.out.println(comCardNum+"번 뽑음 (플레이어 전 내는 절차)@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 						CardSlot c=new CardSlot(0,0,comCardNum);
 						comparator_card.updateCard(c,computer); 
 						if(c.getCardIndex()>=5&&c.getCardIndex()<=56 && comparator_card.getFirstNumberCard()==null) {
@@ -264,6 +264,7 @@ public class Main extends JFrame{
 						}
 						rule_card.updateCard(comparator_card.getFirstNumberCard()); //여긴가?
 					}
+					System.out.println("==================="+val+"번 카드 선택하기 전에 컴퓨터가 냄 - 완료================="); 
 					
 					int rnd=round.getRound(); //라운드 체크
 					
@@ -286,7 +287,7 @@ public class Main extends JFrame{
 							cslot[val].setCanPlay(true);
 						System.out.println("exception : 모든 카드 가능");
 					}
-					System.out.println(comparator_card.getCardInfo()+"는 현재  comp에 놓인 카드의 카드정보");
+					System.out.println("(컴퓨터 다 냈음)"+comparator_card.getCardInfo()+"는 현재  comp에 놓인 카드의 카드정보");
 					
 					if(cslot[val].getCanPick(comparator_card) && cslot[val].isVisible()) {			//if the card is pickable
 						//지금 사라진 카드도 선택하면 되게 됨.
@@ -294,21 +295,22 @@ public class Main extends JFrame{
 						//comparator_card.updateCard(cslot[val]); //need to update comparator when more powerful card occurs.(resolve it!)
 
 						for(int i=0;i<10;i++) {
-							System.out.println(i+"번째 카드는 는..........."+cslot[i].isVisible());
+							System.out.println(i+"번째 카드 낼수 있는가?"+cslot[i].isVisible());
 						}
 						
-						System.out.println("컴퓨터 카드 냄");
+						System.out.println("사용자 카드 내기 시작.");
 						comparator_card.updateCard(cslot[val],0); //input for player 0 : user
 						my_play_card.updateCard(cslot[val]);
 						if(cslot[val].getCardIndex()>=5&&cslot[val].getCardIndex()<=56 && comparator_card.getFirstNumberCard()==null) {
 							comparator_card.setFirstNumberCard(cslot[val]);
-							System.out.println("[플레이어 전 ]firstnumber : "+comparator_card.getFirstNumberCard().getCardIndex());
+							System.out.println("firstnumber : "+comparator_card.getFirstNumberCard().getCardIndex());
 						}
 						
 						
 						rule_card.updateCard(comparator_card.getFirstNumberCard()); //여긴가?
 						System.out.println("현재 comparator에 놓인 카드는 "+comparator_card.getCardInfo());
-						
+
+						System.out.println("==================="+val+"번 카드 선택한 후 컴퓨터가 냄================="); 
 						for(int computer=1; computer<lastGameWinner;/*computer%NUM_OF_PLAYER<lastGameWinner;*/ computer++) {
 							System.out.println("컴퓨터 "+computer+"의 차례");
 							while(true) {
@@ -334,6 +336,7 @@ public class Main extends JFrame{
 								}
 							}
 						}
+						System.out.println("==================="+val+"번 카드 선택한 후 컴퓨터가 냄 - 완료================="); 
 						statusLabel.setText("You picked "+cslot[val].getCardInfo()+
 						". Won this Game? : "+comparator_card.getWinOrLose(0)); //change text
 						
@@ -376,7 +379,7 @@ public class Main extends JFrame{
 								System.exit(0); //끝!@
 							}
 							what_was_winner_card.setText("Last Winning Card: "+comparator_card.getCardInfo());
-							System.out.println(rnd+"라운드 새로 시작");
+							System.out.println(rnd+1+"라운드 새로 시작");
 							deck.resetCardDeck();
 							for(int i=0;i<10;i++) {	//카드세팅
 								cslot[i].setVisible(false);
