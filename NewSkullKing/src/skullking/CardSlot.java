@@ -8,13 +8,13 @@ import java.awt.event.*;
  */
 
 public class CardSlot extends JButton {
-	int slotIndex;			// index of cardslot (0~9)
-	int cardIndex;			// present card number (0~65)
-	int cardNum;			// important when normal card appeared (1~13)
-	boolean canPick;		// can pick card?
-	boolean canPlay;		// can play card?
-	ImageIcon canPickImg;	// image for pickable card
-	ImageIcon dontPickImg;	// image for non-pickable card
+	private int slotIndex;			// index of cardslot (0~9)
+	private int cardIndex;			// present card number (0~65)
+	private int cardNum;			// important when normal card appeared (1~13)
+	private boolean canPick;		// can pick card?
+	private boolean canPlay;		// can play card?
+	private ImageIcon canPickImg;	// image for pickable card
+	private ImageIcon dontPickImg;	// image for non-pickable card
 	
 	static final int ESCAPE=1; 		//index 0~4 (5)
 	static final int GOLD=2;		//index 5~17 (13)

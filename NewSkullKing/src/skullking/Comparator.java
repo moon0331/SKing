@@ -34,7 +34,7 @@ public class Comparator extends CardSlot {
 		strongest_card=present_card;
 		System.out.println("그래서 strongest is "+strongest_card.getCardInfo());
 		winner=player_num; 
-		System.out.println("카드 번호는?"+strongest_card.cardNum);
+		//System.out.println("카드 번호는?"+strongest_card.cardNum);
 		super.updateCard(strongest_card);
 	}
 	

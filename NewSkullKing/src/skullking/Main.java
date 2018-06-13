@@ -8,12 +8,12 @@ import java.util.Random;
 // 컴퓨터 플레이어가 어떻게 카드를 내는가
 // 점수 계산 및 종료(종료 언제 하는지 확인)
 
-class predictWinTextField extends JTextField{
+class PredictWinTextField extends JTextField{
 	private boolean locked; //OK to predict?
 	private int[] predict;
 	private int round;
 	private Random r;
-	public predictWinTextField(int numOfPlayer){
+	public PredictWinTextField(int numOfPlayer){
 		locked=false;
 		predict=new int[numOfPlayer];
 		round=1;
@@ -102,12 +102,6 @@ public class Main extends JFrame{
 	
 	static final int CENTER=750;
 	
-	public void gameRound(int round) {
-		for(int i=0; i<round;i++) {
-			
-		}
-	}
-	
 	public void calResult() {
 		System.out.println("END the game");
 	}
@@ -171,11 +165,11 @@ public class Main extends JFrame{
 		last_game_winner.setLocation(Main.CENTER+300,-20);
 		gameScreen.add(last_game_winner);
 		
-		JLabel what_was_winner_card=new JLabel("Last Winning Card: ");
+		/*JLabel what_was_winner_card=new JLabel("Last Winning Card: ");
 		what_was_winner_card.setFont(what_was_winner_card.getFont().deriveFont(15.0f));
 		what_was_winner_card.setSize(300,300);
 		what_was_winner_card.setLocation(Main.CENTER+300,20);
-		gameScreen.add(what_was_winner_card);
+		gameScreen.add(what_was_winner_card);*/
 		
 		JLabel winStatus=new JLabel("real win/prediction : ");
 		winStatus.setFont(winStatus.getFont().deriveFont(15.0f));
@@ -215,7 +209,7 @@ public class Main extends JFrame{
 			gameScreen.add(cslot[i]);	//you can see that slot
 		}
 		
-		predictWinTextField predField=new predictWinTextField(Main.NUM_OF_PLAYER);
+		PredictWinTextField predField=new PredictWinTextField(Main.NUM_OF_PLAYER);
 		predField.setSize(150,40); //size
 		predField.setLocation(300,600); //location
 		predField.addActionListener(new ActionListener() {
@@ -429,7 +423,7 @@ public class Main extends JFrame{
 								gameScreen.setVisible(false); //점수 보여주고 나중에 꺼지기
 								System.exit(0); //끝!@
 							}
-							what_was_winner_card.setText("Last Winning Card: "+comparator_card.getCardInfo());
+							//what_was_winner_card.setText("Last Winning Card: "+comparator_card.getCardInfo());
 							System.out.println("=============="+(rnd+1)+"라운드 새로 시작==================");
 							deck.resetCardDeck();
 							for(int i=0;i<10;i++) {	//카드세팅
