@@ -255,10 +255,10 @@ public class Main extends JFrame{
 					for(int computer=lastGameWinner; computer<4; computer++) { //나 다음 컴퓨터가 카드 냄
 						if(computer==0) break;
 						int comCardNum=deck.getCard();
-						System.out.println(comCardNum+"번 뽑음 (플레이어 이후)@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+						System.out.println(comCardNum+"번 뽑음 (플레이어 전)@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 						CardSlot c=new CardSlot(0,0,comCardNum);
 						comparator_card.updateCard(c,computer); 
-						if(c.cardIndex>=5&&c.cardIndex<=56 && comparator_card.getFirstNumberCard()==null) {
+						if(c.getCardIndex()>=5&&c.getCardIndex()<=56 && comparator_card.getFirstNumberCard()==null) {
 							comparator_card.setFirstNumberCard(c);
 						}
 					}
@@ -298,14 +298,17 @@ public class Main extends JFrame{
 						System.out.println("컴퓨터 카드 냄");
 						comparator_card.updateCard(cslot[val],0); //input for player 0 : user
 						my_play_card.updateCard(cslot[val]);
-						//rule_card.updateCard(comparator_card.getFirstNumberCard(),0); //여긴가?
+						if(cslot[val].getCardIndex()>=5&&cslot[val].getCardIndex()<=56 && comparator_card.getFirstNumberCard()==null) {
+							comparator_card.setFirstNumberCard(cslot[val]);
+						}
+						rule_card.updateCard(comparator_card.getFirstNumberCard()); //여긴가?
 						System.out.println("현재 comparator에 놓인 카드는 "+comparator_card.getCardInfo());
 						
 						for(int computer=1; computer<lastGameWinner;/*computer%NUM_OF_PLAYER<lastGameWinner;*/ computer++) {
 							System.out.println("컴퓨터 "+computer+"의 차례");
 							while(true) {
 								int comCardNum=deck.getCard();
-								System.out.println(comCardNum+"번 뽑음 (player 전)@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+								System.out.println(comCardNum+"번 뽑음 (player 후)@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 								CardSlot c=new CardSlot(0,0,comCardNum);
 								/*c.setLocation(100,100);
 								c.setSize(50,75);
@@ -315,6 +318,10 @@ public class Main extends JFrame{
 								if(c.checkValidity(comparator_card)) {
 									System.out.println("player "+computer+"가 그 카드 업데이트");
 									comparator_card.updateCard(c,computer);
+									if(c.getCardIndex()>=5&&c.getCardIndex()<=56 && comparator_card.getFirstNumberCard()==null) {
+										comparator_card.setFirstNumberCard(c);
+									}
+									rule_card.updateCard(comparator_card.getFirstNumberCard()); //여긴가?
 									break;
 								} else {
 									deck.setFree(c.getCardIndex());

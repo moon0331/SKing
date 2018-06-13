@@ -145,13 +145,13 @@ public class CardSlot extends JButton {
 	
 	public boolean checkValidity(Comparator C) {
 		//System.out.println("====check validity start====");
-		System.out.println("comparator level : "+C.getLevel()+CardSlot.cardLevelString[C.getLevel()]);
-		System.out.println(C.getFirstNumberCard());
+		System.out.println("comparator level : "+CardSlot.cardLevelString[C.getLevel()]+C.getLevel());
+		System.out.println("현재 comparator의 first card는 "+C.getFirstNumberCard());
 		int level=1;
 		if(C.getFirstNumberCard()!=null) {
 			level=C.getFirstNumberCard().getLevel();
 		}
-		System.out.println(level+"firstCard가 현재 지배하는 레벨");
+		System.out.println("firstCard가 현재 지배하는 레벨은 "+level);
 		if(level>=CardSlot.GOLD && level<=CardSlot.BLACK) {//if first filed num card color is same as mine, it can be played
 			if(level==this.getLevel()) {
 				canPlay=true;
