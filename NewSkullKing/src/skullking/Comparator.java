@@ -24,13 +24,18 @@ public class Comparator extends CardSlot {
 	
 	public void setFirstNumberCard(CardSlot c) {
 		firstNumber=c;
+		setVisible(false);
+		super.updateCard(c);
+		setVisible(true);
 	}
 	
 	public void setData(CardSlot present_card, int player_num) {
 		System.out.println("새로운 이미지로 update : "+present_card.getCardInfo());
 		strongest_card=present_card;
+		System.out.println("그래서 strongest is "+strongest_card.getCardInfo());
 		winner=player_num; 
-		super.updateCard(present_card);
+		System.out.println("카드 번호는?"+strongest_card.cardNum);
+		super.updateCard(strongest_card);
 	}
 	
 	public boolean getWinOrLose(int playerNum) {
@@ -89,7 +94,10 @@ public class Comparator extends CardSlot {
 				}
 			}
 			else if(level==CardSlot.BLACK) {
-				if(present_card.getLevel()>level || present_card.getCardIndex()>strongest_card.getCardIndex()) {
+				if(present_card.getLevel()>level) {
+					setData(present_card,player_num);
+				}
+				else if(level==present_card.getLevel() && present_card.getCardIndex()>strongest_card.getCardIndex()) {
 					setData(present_card,player_num);
 				}
 			}
@@ -111,7 +119,8 @@ public class Comparator extends CardSlot {
 
 		}
 		System.out.println(strongest_card.getCardInfo()+"를 낸 "+winner+" wins");
-		super.setIcon(strongest_card.getIcon());
+		//super.updateCard(strongest_card);
+		//super.setIcon(strongest_card.getIcon());
 	}
 
 	public int getWinner() {

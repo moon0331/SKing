@@ -203,7 +203,7 @@ public class CardSlot extends JButton {
 	
 	public void updateCard(CardSlot cslot) {	//update card image (used in comparator ; need to move?)
 		if(cslot==null) {return;}
-		System.out.println("update card!!!! "+"로 업데이트");
+		System.out.println("update card!!!! "+cslot.getCardInfo()+"로 업데이트");
 		ImageIcon icon=cslot.getCanPickImg();
 		//System.out.println("icon name : "+icon.getDescription());
 		setIcon(icon);
