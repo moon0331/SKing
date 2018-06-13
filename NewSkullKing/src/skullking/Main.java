@@ -23,6 +23,7 @@ class predictWinTextField extends JTextField{
 	public void setRound(int rnd) {
 		round=rnd;
 		System.out.println("new round : "+rnd);
+		locked=false;
 	}
 	public void setPrediction(Player[] p) {
 		for(int i=0;i<p.length;i++) {
@@ -191,24 +192,25 @@ public class Main extends JFrame{
 			gameScreen.add(cslot[i]);	//you can see that slot
 		}
 		
-		predictWinTextField writePredictionField=new predictWinTextField(Main.NUM_OF_PLAYER);
-		writePredictionField.setSize(150,40); //size
-		writePredictionField.setLocation(300,600); //location
-		writePredictionField.addActionListener(new ActionListener() {
+		predictWinTextField predField=new predictWinTextField(Main.NUM_OF_PLAYER);
+		predField.setSize(150,40); //size
+		predField.setLocation(300,600); //location
+		predField.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				try {
-					int inputData=Integer.parseInt(writePredictionField.getText());
+					int inputData=Integer.parseInt(predField.getText());
 					System.out.println(inputData+"입력");
-					if(inputData>=writePredictionField.getRound())
+					if(inputData>predField.getRound())
 						return;
-					writePredictionField.setPredictionValue(inputData,0);
-					writePredictionField.setPrediction(p);
+					predField.setPredictionValue(inputData,0);
+					predField.setPrediction(p);
+					predField.setLock(true); //언제 false?
 				}catch(Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-		gameScreen.add(writePredictionField);
+		gameScreen.add(predField);
 		
 		JTextField jt=new JTextField(10);	//text field to write int
 		jt.addActionListener(new ActionListener() {
@@ -303,8 +305,12 @@ public class Main extends JFrame{
 								System.out.println("player"+p[i].getPlayerName()+"의 현재까지 점수는 "+p[i].getScore());
 								// 화면에 띄워주기
 							}
-							if(round.getRound()==10) { 
+							if(round.getRound()==3) { 
+								for(Player pp:p) {
+									System.out.println(pp.getPlayerName()+"의 최종 점수는!!!!! "+pp.getScore());
+								}
 								gameScreen.setVisible(false); //점수 보여주고 나중에 꺼지기
+								System.exit(0); //끝!@
 							}
 							System.out.println(rnd+"라운드 새로 시작");
 							deck.resetCardDeck();
@@ -340,7 +346,7 @@ public class Main extends JFrame{
 							last_game_winner.setText("Last Game Winner : "+lastGameWinner);
 							round.setRound(rnd+1);
 							roundNumber.setText((1+rnd)+"round");
-							writePredictionField.setRound(rnd+1);
+							predField.setRound(rnd+1);
 						}
 					}
 					System.out.println("process done");
