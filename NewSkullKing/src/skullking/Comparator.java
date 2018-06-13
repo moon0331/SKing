@@ -27,9 +27,9 @@ public class Comparator extends CardSlot {
 		super.updateCard(present_card);
 	}
 	
-	public String getWinOrLose(int playerNum) {
-		if(winner==playerNum) return "True";
-		else return "False";
+	public boolean getWinOrLose(int playerNum) {
+		if(winner==playerNum) return true;
+		else return false;
 		
 	}
 	

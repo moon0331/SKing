@@ -9,6 +9,38 @@ import java.util.Scanner;
 // 컴퓨터 플레이어가 어떻게 카드를 내는가
 // 점수 계산 및 종료(종료 언제 하는지 확인)
 
+class predictWinTextField extends JTextField{
+	private boolean locked;
+	private int[] predict;
+	private int round;
+	private Random r;
+	public predictWinTextField(int numOfPlayer){
+		locked=false;
+		predict=new int[numOfPlayer];
+		round=1;
+		r=new Random();
+	}
+	public void setRound(int rnd) {
+		round=rnd;
+		System.out.println("new round : "+rnd);
+	}
+	public void setPrediction(Player[] p) {
+		for(int i=0;i<p.length;i++) {
+			if(i!=0) {
+				predict[i]=r.nextInt(round+1);
+			}
+			p[i].setPredictWin(predict[i]);
+			System.out.println(p[i].getPlayerName()+"는 "+p[i].getPredictWin()+"승 예상");
+		}
+	}
+	public void setPredictionValue(int val, int i) {
+		predict[i]=val;
+	}
+	public int getRound() {
+		return round;
+	}
+}
+
 class CardDeck{
 	boolean[] isAlreadyPicked;
 	Random r=new Random();
@@ -78,6 +110,7 @@ public class Main extends JFrame{
 		// TODO Auto-generated method stub
 		
 		GameRound round=new GameRound(1);
+		
 	
 		Player[] p=new Player[NUM_OF_PLAYER]; //4 members to play.
 		for(int i=0;i<4;i++) {
@@ -88,6 +121,11 @@ public class Main extends JFrame{
 		gameScreen.setLayout(null); //not use layout manager
 		gameScreen.setSize(Main.CENTER*2,800); //frame size
 		gameScreen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //close option
+		
+		/*JButton b=new JButton(new ImageIcon("black8.jpg"));
+		b.setSize(100,150);
+		b.setLocation(0,0);
+		gameScreen.add(b);*/
 		
 		JLabel roundNumber=new JLabel("1round");		//label to represent round number
 		roundNumber.setFont(roundNumber.getFont().deriveFont(20.0f)); //font size 20
@@ -146,6 +184,25 @@ public class Main extends JFrame{
 			cslot[i]=new CardSlot(i,round.getRound(), deck.getCard());	//make random card in cardslot
 			gameScreen.add(cslot[i]);	//you can see that slot
 		}
+		
+		predictWinTextField writePredictionField=new predictWinTextField(Main.NUM_OF_PLAYER);
+		writePredictionField.setSize(150,40); //size
+		writePredictionField.setLocation(300,600); //location
+		writePredictionField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				try {
+					int inputData=Integer.parseInt(writePredictionField.getText());
+					System.out.println(inputData+"입력");
+					if(inputData>=writePredictionField.getRound())
+						return;
+					writePredictionField.setPredictionValue(inputData,0);
+					writePredictionField.setPrediction(p);
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		gameScreen.add(writePredictionField);
 		
 		JTextField jt=new JTextField(10);	//text field to write int
 		jt.addActionListener(new ActionListener() {
@@ -214,6 +271,12 @@ public class Main extends JFrame{
 						statusLabel.setText("You picked "+cslot[val].getCardInfo()+
 						". Won"
 						+ " this Game? : "+comparator_card.getWinOrLose(0)); //change text
+						
+						for(int i=0;i<NUM_OF_PLAYER; i++) {
+							boolean winOrLose=comparator_card.getWinOrLose(i);
+							p[i].setWin(winOrLose);
+						}
+						
 						cslot[val].setCanPlay(false);
 						cslot[val].setVisible(false); //disable to pick slot's card
 						round.endTurn();
@@ -229,7 +292,8 @@ public class Main extends JFrame{
 							lastGameWinner=comparator_card.getWinner();
 							System.out.println("이번판의 승자는 "+lastGameWinner);
 							for(int i=0;i<NUM_OF_PLAYER; i++) {
-								p[i].calScore(rnd);
+								int score=p[i].calScore(rnd);
+								p[i].updateScore(score);
 								System.out.println("player"+p[i].getPlayerName()+"의 현재까지 점수는 "+p[i].getScore());
 								// 화면에 띄워주기
 							}
@@ -246,13 +310,13 @@ public class Main extends JFrame{
 								//System.out.println("카드세팅완료!");
 							}
 
-							for(int computer=1; computer<NUM_OF_PLAYER;computer++) { //예측
+							/*for(int computer=1; computer<NUM_OF_PLAYER;computer++) { //예측
 								//카드 중복처리 안되어있음. 여기는 예측
 								int computerWinPrediction=r.nextInt(rnd+1);
 								p[computer].setPredictWin(computerWinPrediction); //예측
 								System.out.println(p[computer].getPlayerName()+"는 "+p[computer].getPredictWin()+"승 예상");
 								//playerNum : 이전게임승자 ~ 플레이어 전까지
-							}
+							}*/
 							
 							for(int computer=lastGameWinner; computer<NUM_OF_PLAYER; computer++) {
 								//여기는 카드 내는것. 사람이 내고나서 다른 컴퓨터들도 카드를 내야 함.
@@ -270,6 +334,7 @@ public class Main extends JFrame{
 							last_game_winner.setText("Last Game Winner : "+lastGameWinner);
 							round.setRound(rnd+1);
 							roundNumber.setText((1+rnd)+"round");
+							writePredictionField.setRound(rnd+1);
 						}
 					}
 					System.out.println("process done");
@@ -283,7 +348,7 @@ public class Main extends JFrame{
 		jt.setLocation(Main.CENTER-150,600); //textfield location
 		gameScreen.add(jt);		//add it
 		
-		JTextField predictWin=new JTextField(10);
+		/*JTextField predictWin=new JTextField(10);
 		predictWin.setSize(150,40); //size
 		predictWin.setLocation(300,600); //location
 		predictWin.addActionListener(new ActionListener() {
@@ -304,8 +369,8 @@ public class Main extends JFrame{
 				}
 				//p.set
 			}
-		});
-		gameScreen.add(predictWin);
+		});*/
+		//gameScreen.add(predictWin);
 		gameScreen.setVisible(true); //look frame
 		
 	}

@@ -46,6 +46,10 @@ public class CardSlot extends JButton {
 	
 	
 	public CardSlot(int idx, int round, int cardidx) {
+		setCardSlot(idx,round,cardidx);
+	}
+	
+	public void setCardSlot(int idx, int round, int cardidx) { //new setting
 		slotIndex=idx;
 		cardIndex=cardidx;
 		//setRolloverIcon(new ImageIcon("13.jpg")); //마우스 갖다댔을때 when rollover mouse
@@ -53,6 +57,10 @@ public class CardSlot extends JButton {
 		
 		if(cardidx>=5 && cardidx<=56)
 			cardNum=(cardidx-5)%13+1;	//set card number when normal card
+		else if(cardidx>=59 && cardidx<=63) {
+			cardNum=(cardidx-59)%5+1;
+			System.out.println("해적!");
+		}
 		else
 			cardNum=0;
 		this.setSize(100,150);		//card size
@@ -79,38 +87,6 @@ public class CardSlot extends JButton {
 		}
 	}
 	
-	public void setCardSlot(int idx, int round, int cardidx) { //new setting
-		slotIndex=idx;
-		cardIndex=cardidx;
-		//setRolloverIcon(new ImageIcon("13.jpg")); //마우스 갖다댔을때 when rollover mouse
-		//System.out.println(cardidx+"picked");
-		if(cardidx>=5 && cardidx<=56)
-			cardNum=(cardidx-5)%13+1;	//set card number when normal card
-		else
-			cardNum=0;
-		if(idx<round) { // if it is available to pick in this round (round5 : only can pick card[0]~card[4])
-			//can pick
-			canPick=true;
-			System.out.println(cardidx+"picked");
-			this.setIconImage(canPick); //set icon for card picture
-			this.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					System.out.println("card number " + cardIndex 
-							+ " in slotIndex "+ slotIndex +" picked.."); //when clicked, print result
-				}
-			});
-		}else {
-			canPick=false;
-			System.out.println("this card is not allowed : "+idx+"th card");
-			this.setIconImage(canPick); //set icon for XXXXX
-			this.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					System.out.println("do not touch card "+slotIndex); //when clicked print result
-				}
-			});
-		}
-	}
-	
 	public String getCardInfo() {
 		if(cardNum==0)
 			return CardSlot.cardLevelString[getLevel()];
@@ -120,9 +96,16 @@ public class CardSlot extends JButton {
 
 	public void setIconImage(boolean canPick) {	//set icon
 		if(canPick) {
-			String str=cardLevelString[getLevel()]+".jpg";
-			canPickImg=new ImageIcon(str);
-			System.out.println(str+" "+this.getcardIndex()+"번 뽑음");
+			String path;
+			path=cardLevelString[getLevel()];
+			int cardLv=this.getLevel();
+			if((cardLv>=CardSlot.GOLD && cardLv<=CardSlot.BLACK) || cardLv==CardSlot.PIRATE)
+				path=path+cardNum+".jpg";
+			else
+				path=path+".jpg";
+			//String path=str;
+			canPickImg=new ImageIcon(path);
+			System.out.println(path+"뽑음");
 			setIcon(canPickImg);	//proper icon
 		}
 		else {

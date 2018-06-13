@@ -29,9 +29,12 @@ public class Player extends JPanel{
 		return predictWin;
 	}
 	
-	public int setWin() {
-		numOfWin++;
-		return numOfWin;
+	public int setWin(boolean TF) {
+		if(TF) {
+			numOfWin++;
+			return numOfWin;
+		}
+		else return 0;
 	}
 	
 	public int calScore(int round) {
