@@ -13,6 +13,11 @@ public class Comparator extends CardSlot {
 		System.out.println(this.getLevel()+"레벨");
 	}
 	
+	public void newRoundComparator() {
+		strongest_card=null;
+		firstNumber=null;
+	}
+	
 	public CardSlot getFirstNumberCard() {
 		return firstNumber;
 	}

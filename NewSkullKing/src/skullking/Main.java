@@ -259,8 +259,10 @@ public class Main extends JFrame{
 						CardSlot c=new CardSlot(0,0,comCardNum);
 						comparator_card.updateCard(c,computer); 
 						if(c.getCardIndex()>=5&&c.getCardIndex()<=56 && comparator_card.getFirstNumberCard()==null) {
-							comparator_card.setFirstNumberCard(c);
+							comparator_card.setFirstNumberCard(c); 
+							System.out.println("[플레이어 전 ]firstnumber : "+comparator_card.getFirstNumberCard().getCardIndex());
 						}
+						rule_card.updateCard(comparator_card.getFirstNumberCard()); //여긴가?
 					}
 					
 					int rnd=round.getRound(); //라운드 체크
@@ -300,7 +302,10 @@ public class Main extends JFrame{
 						my_play_card.updateCard(cslot[val]);
 						if(cslot[val].getCardIndex()>=5&&cslot[val].getCardIndex()<=56 && comparator_card.getFirstNumberCard()==null) {
 							comparator_card.setFirstNumberCard(cslot[val]);
+							System.out.println("[플레이어 전 ]firstnumber : "+comparator_card.getFirstNumberCard().getCardIndex());
 						}
+						
+						
 						rule_card.updateCard(comparator_card.getFirstNumberCard()); //여긴가?
 						System.out.println("현재 comparator에 놓인 카드는 "+comparator_card.getCardInfo());
 						
@@ -319,7 +324,8 @@ public class Main extends JFrame{
 									System.out.println("player "+computer+"가 그 카드 업데이트");
 									comparator_card.updateCard(c,computer);
 									if(c.getCardIndex()>=5&&c.getCardIndex()<=56 && comparator_card.getFirstNumberCard()==null) {
-										comparator_card.setFirstNumberCard(c);
+										comparator_card.setFirstNumberCard(c); 
+										System.out.println("[플레이어 후 ]firstnumber : "+comparator_card.getFirstNumberCard().getCardIndex());
 									}
 									rule_card.updateCard(comparator_card.getFirstNumberCard()); //여긴가?
 									break;
@@ -340,6 +346,10 @@ public class Main extends JFrame{
 						
 						cslot[val].setCanPlay(false);
 						cslot[val].setVisible(false); //disable to pick slot's card
+						
+						rule_card.newRoundComparator();
+						comparator_card.newRoundComparator();
+						
 						round.endTurn();
 						
 						int r_win=p[0].getWin();
