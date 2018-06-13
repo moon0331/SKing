@@ -287,6 +287,9 @@ public class Main extends JFrame{
 							System.out.println("컴퓨터 "+computer+"의 차례");
 							while(true) {
 								CardSlot c=new CardSlot(0,0,deck.getCard());
+								c.setLocation(100,100);
+								c.setSize(50,75);
+								gameScreen.add(c);
 								System.out.println(c.getCardInfo()+"새로운 카드의 정보");
 								if(c.checkValidity(comparator_card)) {
 									comparator_card.updateCard(c,computer);

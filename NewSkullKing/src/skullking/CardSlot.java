@@ -188,8 +188,9 @@ public class CardSlot extends JButton {
 	}
 	
 	public void updateCard(CardSlot cslot) {	//update card image (used in comparator ; need to move?)
-		System.out.println("update card!");
+		System.out.println("update card!!!! by ");
 		ImageIcon icon=cslot.getCanPickImg();
+		System.out.println("icon name : "+icon.getDescription());
 		setIcon(icon);
 	}
 	public int getCardIndex() {
