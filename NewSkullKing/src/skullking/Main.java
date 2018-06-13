@@ -227,6 +227,8 @@ public class Main extends JFrame{
 					if(inputData>predField.getRound())
 						return;
 					predField.setPredictionValue(inputData,0);
+					for(Player pp : p)
+						pp.initWin();
 					//player 잘 안들어가는데?
 					predField.setPrediction(p);
 					predField.setLock(true); //언제 false?
@@ -259,10 +261,14 @@ public class Main extends JFrame{
 						CardSlot c=new CardSlot(0,0,comCardNum);
 						comparator_card.updateCard(c,computer); 
 						if(c.getCardIndex()>=5&&c.getCardIndex()<=56 && comparator_card.getFirstNumberCard()==null) {
-							comparator_card.setFirstNumberCard(c); 
-							System.out.println("[플레이어 전 ]firstnumber : "+comparator_card.getFirstNumberCard().getCardIndex());
+							rule_card.setFirstNumberCard(c); 
+							rule_card.updateCard(comparator_card.getFirstNumberCard()); //여긴가?
+							try {
+								System.out.println("[플레이어 전 ]firstnumber : "+comparator_card.getFirstNumberCard().getCardIndex());
+							} catch(Exception ex) {
+								System.out.println("[플레이어 전 ]firstnumber 없음");
+							}
 						}
-						rule_card.updateCard(comparator_card.getFirstNumberCard()); //여긴가?
 					}
 					System.out.println("==================="+val+"번 카드 선택하기 전에 컴퓨터가 냄 - 완료================="); 
 					
@@ -326,10 +332,14 @@ public class Main extends JFrame{
 									System.out.println("player "+computer+"가 그 카드 업데이트");
 									comparator_card.updateCard(c,computer);
 									if(c.getCardIndex()>=5&&c.getCardIndex()<=56 && comparator_card.getFirstNumberCard()==null) {
-										comparator_card.setFirstNumberCard(c); 
-										System.out.println("[플레이어 후 ]firstnumber : "+comparator_card.getFirstNumberCard().getCardIndex());
+										rule_card.setFirstNumberCard(c); 
+										rule_card.updateCard(comparator_card.getFirstNumberCard()); //여긴가?
+										try {
+											System.out.println("[플레이어 후 ]firstnumber : "+comparator_card.getFirstNumberCard().getCardIndex());
+										}catch(Exception ex){
+											System.out.println("[플레이어 후 ]firstnumber X");
+										}
 									}
-									rule_card.updateCard(comparator_card.getFirstNumberCard()); //여긴가?
 									break;
 								} else {
 									deck.setFree(c.getCardIndex());
@@ -349,6 +359,8 @@ public class Main extends JFrame{
 						
 						cslot[val].setCanPlay(false);
 						cslot[val].setVisible(false); //disable to pick slot's card
+						
+						//rule_card.setIcon(comparator_card.getFirstNumberCard());
 						
 						rule_card.newRoundComparator();
 						comparator_card.newRoundComparator();
@@ -379,7 +391,7 @@ public class Main extends JFrame{
 								System.exit(0); //끝!@
 							}
 							what_was_winner_card.setText("Last Winning Card: "+comparator_card.getCardInfo());
-							System.out.println(rnd+1+"라운드 새로 시작");
+							System.out.println("=============="+(rnd+1)+"라운드 새로 시작==================");
 							deck.resetCardDeck();
 							for(int i=0;i<10;i++) {	//카드세팅
 								cslot[i].setVisible(false);
@@ -396,6 +408,8 @@ public class Main extends JFrame{
 								System.out.println(p[computer].getPlayerName()+"는 "+p[computer].getPredictWin()+"승 예상");
 								//playerNum : 이전게임승자 ~ 플레이어 전까지
 							}*/
+							
+							//
 							
 							for(int computer=lastGameWinner; computer<NUM_OF_PLAYER; computer++) {
 								//여기는 카드 내는것. 사람이 내고나서 다른 컴퓨터들도 카드를 내야 함.

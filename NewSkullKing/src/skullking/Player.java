@@ -36,6 +36,9 @@ public class Player extends JPanel{
 		}
 		else return 0;
 	}
+	public void initWin() {
+		numOfWin=0;
+	}
 	
 	public int getWin() {
 		return numOfWin;
