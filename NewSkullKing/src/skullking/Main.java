@@ -3,7 +3,6 @@ package skullking;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.Random;
-import java.util.Scanner;
 
 // firstNumber 설정  - 게임마다 - 처음 숫자 나왔을때 제한시키는 comparator_card.setFirstNumberCard() 사용해야함.
 // 컴퓨터 플레이어가 어떻게 카드를 내는가
@@ -184,7 +183,6 @@ public class Main extends JFrame{
 		gameScreen.add(comparator_card);	//now you can see comparator_card in screen
 		gameScreen.add(my_play_card);
 		
-		Random r=new Random();
 		CardDeck deck=new CardDeck();
 		
 		for(int i=0;i<10;i++) {
@@ -196,10 +194,10 @@ public class Main extends JFrame{
 		predField.setSize(150,40); //size
 		predField.setLocation(300,600); //location
 		predField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ev) {
+			public void actionPerformed(ActionEvent ev) { //예상승수 입력하는 이벤트
 				try {
 					int inputData=Integer.parseInt(predField.getText());
-					System.out.println(inputData+"입력");
+					System.out.println(inputData+"입력했음 player가");
 					if(inputData>predField.getRound())
 						return;
 					predField.setPredictionValue(inputData,0);
@@ -217,7 +215,7 @@ public class Main extends JFrame{
 			public void actionPerformed(ActionEvent e) {	//if string entered
 				//이 클래스 안에 넣기
 				try {
-					if(predField.isLocked()) {
+					if(predField.isLocked()==false) {
 						System.out.println("You didn't predict win");
 						return;
 					}
