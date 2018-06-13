@@ -142,7 +142,8 @@ public class Main extends JFrame{
 		JLabel statusLabel=new JLabel("Your Turn : ");
 		statusLabel.setFont(statusLabel.getFont().deriveFont(25.0f));
 		statusLabel.setSize(600,300);
-		statusLabel.setLocation(Main.CENTER-200,200);
+		statusLabel.setLocation(Main.CENTER-200,180);
+		statusLabel.setHorizontalAlignment(JLabel.CENTER);
 		gameScreen.add(statusLabel);
 		
 		JLabel strongest_card_here=new JLabel("Strongest Card");
@@ -162,6 +163,22 @@ public class Main extends JFrame{
 		last_game_winner.setSize(300,300);
 		last_game_winner.setLocation(Main.CENTER+200,-20);
 		gameScreen.add(last_game_winner);
+		
+		JLabel what_was_winner_card=new JLabel("Last Winning Card: ");
+		what_was_winner_card.setFont(what_was_winner_card.getFont().deriveFont(15.0f));
+		what_was_winner_card.setSize(300,300);
+		what_was_winner_card.setLocation(Main.CENTER+200,20);
+		gameScreen.add(what_was_winner_card);
+		
+		JLabel winStatus=new JLabel("real win/prediction : ");
+		winStatus.setFont(winStatus.getFont().deriveFont(15.0f));
+		winStatus.setSize(300,300);
+		winStatus.setLocation(Main.CENTER-100,225);
+		winStatus.setHorizontalAlignment(JLabel.CENTER);
+		gameScreen.add(winStatus);
+		
+		
+		//"total win "+ p[0].getWin() +"/ predicted win"+p[0].getPredictWin()
 		
 		CardSlot[] cslot=new CardSlot[10]; //ten cards
 		
@@ -201,8 +218,10 @@ public class Main extends JFrame{
 					if(inputData>predField.getRound())
 						return;
 					predField.setPredictionValue(inputData,0);
+					//player 잘 안들어가는데?
 					predField.setPrediction(p);
 					predField.setLock(true); //언제 false?
+					statusLabel.setText("You predicted "+p[0].getPredictWin()+"win");
 				}catch(Exception e) {
 					e.printStackTrace();
 				}
@@ -222,12 +241,12 @@ public class Main extends JFrame{
 					int lastGameWinner=comparator_card.getWinner(); //이전게임 승자 ?항상 0?
 					//System.out.println("저번판 이긴 사람은 "+lastGameWinner); 
 					int val=Integer.parseInt(jt.getText());	//change into int
-					System.out.println(val+"선택함"); 
+					System.out.println("==================="+val+"번 카드 선택함================="); 
 					
 					/*for(int computer=1; computer<lastGameWinner; computer++) { //나 다음 컴퓨터가 카드 냄
 						comparator_card.updateCard(new CardSlot(0,0,deck.getCard()),computer); 
 					}*/
-					int rnd=round.getRound();
+					int rnd=round.getRound(); //라운드 체크
 					
 					if(val>=rnd) { 
 						System.out.println("not a valid card : round="+rnd+", cardnum="+val);
@@ -236,10 +255,10 @@ public class Main extends JFrame{
 					
 					boolean tfval=false;
 					for(int k=0;k<10;k++) {
-						System.out.println(k+"번째 카드체크"+cslot[k].checkValidity(comparator_card));
-						if(cslot[k].checkValidity(comparator_card)) {
+						boolean isOK=cslot[k].checkValidity(comparator_card);
+						System.out.println(k+"번째 카드낼 수 있는지 : "+isOK);
+						if(isOK) {
 							tfval=true;
-							System.out.println("이 카드 낼수 있음");
 							break;
 						}
 					}
@@ -248,9 +267,8 @@ public class Main extends JFrame{
 							cslot[val].setCanPlay(true);
 						System.out.println("모든 카드 가능");
 					}
-					System.out.println("=========================================================");
-					System.out.println(comparator_card.getCardInfo()+"현재 comparator카드정보");
-					System.out.println("=========================================================");
+					System.out.println(comparator_card.getCardInfo()+"는 현재  comp에 놓인 카드의 카드정보");
+					
 					if(cslot[val].getCanPick(comparator_card) && cslot[val].isVisible()) {			//if the card is pickable
 						//지금 사라진 카드도 선택하면 되게 됨.
 						//check level
@@ -279,22 +297,23 @@ public class Main extends JFrame{
 							}
 						}
 						statusLabel.setText("You picked "+cslot[val].getCardInfo()+
-						". Won"
-						+ " this Game? : "+comparator_card.getWinOrLose(0)); //change text
+						". Won this Game? : "+comparator_card.getWinOrLose(0)); //change text
 						
 						for(int i=0;i<NUM_OF_PLAYER; i++) {
 							boolean winOrLose=comparator_card.getWinOrLose(i);
+							System.out.println("player "+i+" win? : "+winOrLose);
+							System.out.println("predict : "+p[i].getPredictWin()+"real win : "+p[i].getWin());
 							p[i].setWin(winOrLose);
 						}
 						
 						cslot[val].setCanPlay(false);
 						cslot[val].setVisible(false); //disable to pick slot's card
 						round.endTurn();
-						/*ImageIcon lastWinCardIcon=(ImageIcon)comparator_card.getIcon();
-						System.out.println("방금 경기 승리한 카드"+lastWinCardIcon.getDescription());*/
-						//calculate result and end turn.
-						//round++;
-						//if(round==11) calResult();
+						
+						int r_win=p[0].getWin();
+						int p_win=p[0].getPredictWin();
+						winStatus.setText("real win/prediction : "+r_win+"win(s) / "+p_win+"win(s) | Prediction Hit : "+(r_win==p_win));
+						
 						if(round.isRoundEnd()) {
 							System.out.println(round.getRound()+"round종료");
 							//종료시 이벤트 처리..................점수계산 안함!!!!
@@ -307,13 +326,14 @@ public class Main extends JFrame{
 								System.out.println("player"+p[i].getPlayerName()+"의 현재까지 점수는 "+p[i].getScore());
 								// 화면에 띄워주기
 							}
-							if(round.getRound()==3) { 
+							if(round.getRound()==10) { 
 								for(Player pp:p) {
 									System.out.println(pp.getPlayerName()+"의 최종 점수는!!!!! "+pp.getScore());
 								}
 								gameScreen.setVisible(false); //점수 보여주고 나중에 꺼지기
 								System.exit(0); //끝!@
 							}
+							what_was_winner_card.setText("Last Winning Card: "+comparator_card.getCardInfo());
 							System.out.println(rnd+"라운드 새로 시작");
 							deck.resetCardDeck();
 							for(int i=0;i<10;i++) {	//카드세팅

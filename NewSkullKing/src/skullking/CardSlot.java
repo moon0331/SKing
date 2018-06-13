@@ -144,7 +144,7 @@ public class CardSlot extends JButton {
 	}
 	
 	public boolean checkValidity(Comparator C) {
-		System.out.println("check validity");
+		System.out.println("====check validity start====");
 		System.out.println("comparator level : "+C.getLevel()+CardSlot.cardLevelString[C.getLevel()]);
 		System.out.println(C.getFirstNumberCard());
 		int level=1;
@@ -164,11 +164,19 @@ public class CardSlot extends JButton {
 			canPlay=true;
 		}
 		//System.out.println("낼수 있나? : "+canPlay);
+		System.out.println("====check validity end====");
+		return canPlay;
+	}
+	
+	public boolean getCanPlay() {
 		return canPlay;
 	}
 	
 	public boolean getCanPick(Comparator compCardNum) {	// return whether this cardslot can be picked
-		return canPick && checkValidity(compCardNum);
+		System.out.println("====getCanPick start====");
+		checkValidity(compCardNum);
+		System.out.println("====getCanPick end====");
+		return canPick && canPlay;
 	}
 	
 	public ImageIcon getCanPickImg() {	//return canPickImg, which is card image

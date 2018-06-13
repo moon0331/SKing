@@ -46,7 +46,7 @@ public class Comparator extends CardSlot {
 			static final int SKULL_KING=9;	//index 65
 		 * */
 
-		System.out.println("=======updateCard for playerNum "+player_num+"==========");
+		System.out.println("updateCard for playerNum "+player_num);
 		System.out.println("player"+player_num+"이 "+present_card.getCardInfo()+"를 냄!");
 		if(strongest_card==null){
 			System.out.println("strong card is none, 따라서 이긴다!");

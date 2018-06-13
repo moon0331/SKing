@@ -37,6 +37,10 @@ public class Player extends JPanel{
 		else return 0;
 	}
 	
+	public int getWin() {
+		return numOfWin;
+	}
+	
 	public int calScore(int round) {
 		int val=0;
 		if(predictWin==0) {
