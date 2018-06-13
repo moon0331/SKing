@@ -286,9 +286,12 @@ public class Main extends JFrame{
 						for(int computer=1; computer<4;/*computer%NUM_OF_PLAYER<lastGameWinner;*/ computer++) {
 							System.out.println("컴퓨터 "+computer+"의 차례");
 							while(true) {
-								CardSlot c=new CardSlot(0,0,deck.getCard());
+								int comCardNum=deck.getCard();
+								System.out.println(comCardNum+"번 뽑음@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+								CardSlot c=new CardSlot(0,0,comCardNum);
 								c.setLocation(100,100);
 								c.setSize(50,75);
+								c.setVisible(true);
 								gameScreen.add(c);
 								System.out.println(c.getCardInfo()+"새로운 카드의 정보");
 								if(c.checkValidity(comparator_card)) {
